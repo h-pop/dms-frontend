@@ -24,4 +24,8 @@ export class LoginComponent {
         });
         return false;
     }
+
+    login2() {
+        this.loginService.obtainAccessToken(this.credentials);
+    }
 }

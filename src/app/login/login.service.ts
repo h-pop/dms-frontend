@@ -37,4 +37,8 @@ export class LoginService {
             alert(response);
         });
     }
+
+    public obtainAccessToken(credentials) {
+        
+    }
 }
