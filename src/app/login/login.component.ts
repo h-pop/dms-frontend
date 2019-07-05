@@ -15,17 +15,14 @@ export class LoginComponent {
     constructor(private loginService: LoginService, private router: Router) { }
 
     login() {
-        this.loginService.login(this.credentials, () => {
-            this.error = !this.loginService.authenticated;
-            if (!!this.loginService.authenticated) {
-                this.loginService.getUserData();
-            }
-            // this.router.navigateByUrl('/home');
-        });
-        return false;
-    }
-
-    login2() {
         this.loginService.obtainAccessToken(this.credentials);
+        // this.loginService.login(this.credentials, () => {
+        //     this.error = !this.loginService.authenticated;
+        //     if (!!this.loginService.authenticated) {
+        //         this.loginService.getUserData();
+        //     }
+        //     // this.router.navigateByUrl('/home');
+        // });
+        // return false;
     }
 }
