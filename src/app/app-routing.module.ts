@@ -7,7 +7,7 @@ const routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'login' },
     // { path: '**', redirectTo: 'login' },
     { path: 'login', component: LoginComponent },
-    { path: 'oauth/callback', component: OauthComponent }
+    { path: 'oauthcallback', component: OauthComponent }
 ];
 
 @NgModule({
