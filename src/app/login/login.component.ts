@@ -25,4 +25,7 @@ export class LoginComponent {
         // });
         // return false;
     }
+    capSignIn() {
+        window.location.assign('http://localhost:3000/login?response_type=code&client_id=dms_frontend_client_id&state=someGeneratedState');
+    }
 }

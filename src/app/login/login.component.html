@@ -1,22 +1,23 @@
-<div class="alert alert-danger" [hidden]="!error">
-    There was a problem logging in. Please try again.
-</div>
-<form role="form" (submit)="login()">
+<form class="form-signin" role="form" (submit)="login()">
     <div class="form-group">
-        <label for="username">Username:</label> 
+        <label class="h3">Sign in</label>
         <input type="text" 
             class="form-control" 
             id="username" 
             name="username"
+            placeholder="Username"
             [(ngModel)]="credentials.username" />
-    </div>
-    <div class="form-group">
-        <label for="password">Password:</label> 
         <input type="password" 
             class="form-control" 
             id="password"
-            name="password" 
+            name="password"
+            placeholder="Password"
             [(ngModel)]="credentials.password" />
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    <button type="button" (click)="capSignIn()" class="btn btn-primary dms-button cap-signin-button">
+        <h3>Sign in using CAP</h3>
+    </button>
 </form>
