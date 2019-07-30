@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
     selector: 'app-oauth',
@@ -7,8 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OauthComponent implements OnInit {
 
+    constructor(private http: HttpClient) { }
+
     ngOnInit(): void {
-        throw new Error("Method not implemented.");
+        const headers = {
+            'Authorization': 'Basic ' + btoa('admin:admin')
+        };
+        //TODO
     }
 
 }
