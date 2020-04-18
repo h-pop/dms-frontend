@@ -16,15 +16,8 @@ export class LoginComponent {
 
     login() {
         this.loginService.obtainAccessToken(this.credentials);
-        // this.loginService.login(this.credentials, () => {
-        //     this.error = !this.loginService.authenticated;
-        //     if (!!this.loginService.authenticated) {
-        //         this.loginService.getUserData();
-        //     }
-        //     // this.router.navigateByUrl('/home');
-        // });
-        // return false;
     }
+
     capSignIn() {
         window.location.assign('http://localhost:3000/login?response_type=code&client_id=dms_frontend_client_id&state=someGeneratedState');
     }
