@@ -8,12 +8,24 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { LoginService } from './login/login.service';
 import { OauthComponent } from './oauth/oauth.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './header/header.component';
+import { NewDocumentComponent } from './new-document/new-document.component';
+import { DocumentRepositoryComponent } from './document-repository/document-repository.component';
+import { ConfigureComponent } from './configure/configure.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
-        OauthComponent
+        OauthComponent,
+        PageNotFoundComponent,
+        HomeComponent,
+        HeaderComponent,
+        NewDocumentComponent,
+        DocumentRepositoryComponent,
+        ConfigureComponent
     ],
     imports: [
         BrowserModule,
