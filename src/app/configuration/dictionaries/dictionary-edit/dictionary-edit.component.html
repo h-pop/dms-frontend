@@ -1,0 +1,21 @@
+<div style="margin-bottom: 4px;" class="row">
+    <div class="col-md-6">
+        <h4>{{ dictionary.name }}</h4>
+    </div>
+    <div class="col-md-5">
+        <div class="pull-right">
+            <button class="btn btn-primary" (click)="onSaveChanges()">Save changes</button>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-success" (click)="onAddDictionaryValue()">+</button>
+    </div>
+</div>
+<div style="margin-bottom: 9px;" *ngFor="let value of dictionary.values; let i = index" class="row">
+    <div class="col-md-11 col-sm-5">
+        <input [value]="value" placeholder="Name" type="text" class="form-control">
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-danger" (click)="onDeleteDictionaryValue(i)">X</button>
+    </div>
+</div>

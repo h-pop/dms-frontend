@@ -9,6 +9,8 @@ import { ConfigurationComponent } from './configuration/configuration.component'
 import { DocumentTypesComponent } from './configuration/document-types/document-types.component';
 import { OrganizationStructureComponent } from './configuration/organization-structure/organization-structure.component';
 import { DocumentTypeEditComponent } from './configuration/document-types/document-type-edit/document-type-edit.component';
+import { DictionariesComponent } from './configuration/dictionaries/dictionaries.component';
+import { DictionaryEditComponent } from './configuration/dictionaries/dictionary-edit/dictionary-edit.component';
 
 const routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -19,7 +21,10 @@ const routes: Routes = [
         { path: 'document-types', component: DocumentTypesComponent },
         { path: 'document-types/new', component: DocumentTypeEditComponent },
         { path: 'document-types/:id', component: DocumentTypeEditComponent },
-        { path: 'org-structure', component: OrganizationStructureComponent }
+        { path: 'org-structure', component: OrganizationStructureComponent },
+        { path: 'dictionaries', component: DictionariesComponent },
+        { path: 'dictionaries/new', component: DictionaryEditComponent },
+        { path: 'dictionaries/:id', component: DictionaryEditComponent }
     ]},
     { path: 'login', component: LoginComponent }, 
     { path: '**', component: PageNotFoundComponent }

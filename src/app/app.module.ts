@@ -20,6 +20,9 @@ import { DocumentTypesComponent } from './configuration/document-types/document-
 import { OrganizationStructureComponent } from './configuration/organization-structure/organization-structure.component';
 import { DocumentTypeEditComponent } from './configuration/document-types/document-type-edit/document-type-edit.component';
 import { DocumentTypesService } from './configuration/document-types/document-types.service';
+import { DictionariesComponent } from './configuration/dictionaries/dictionaries.component';
+import { DictionariesService } from './configuration/dictionaries/dictionaries.service';
+import { DictionaryEditComponent } from './configuration/dictionaries/dictionary-edit/dictionary-edit.component';
 
 @NgModule({
     declarations: [
@@ -36,7 +39,9 @@ import { DocumentTypesService } from './configuration/document-types/document-ty
         ConfigurationListComponent,
         DocumentTypesComponent,
         OrganizationStructureComponent,
-        DocumentTypeEditComponent
+        DocumentTypeEditComponent,
+        DictionariesComponent,
+        DictionaryEditComponent
     ],
     imports: [
         BrowserModule,
@@ -44,7 +49,7 @@ import { DocumentTypesService } from './configuration/document-types/document-ty
         HttpClientModule,
         FormsModule
     ],
-    providers: [LoginService, DocumentTypesService],
+    providers: [LoginService, DocumentTypesService, DictionariesService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
