@@ -14,6 +14,7 @@ import { HeaderComponent } from './header/header.component';
 import { NewDocumentComponent } from './new-document/new-document.component';
 import { DocumentRepositoryComponent } from './document-repository/document-repository.component';
 import { ConfigureComponent } from './configure/configure.component';
+import { DropdownDirective } from './shared/dropdown.directive';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { ConfigureComponent } from './configure/configure.component';
         HeaderComponent,
         NewDocumentComponent,
         DocumentRepositoryComponent,
-        ConfigureComponent
+        ConfigureComponent,
+        DropdownDirective
     ],
     imports: [
         BrowserModule,
