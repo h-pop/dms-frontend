@@ -1,6 +1,6 @@
-<div style="margin-bottom: 4px;" class="row">
+<div style="margin-bottom: 10px;" class="row">
     <div class="col-md-6">
-        <h4>{{ documentType.name }}</h4>
+        <input [(ngModel)]="documentType.name" placeholder="Document type" type="text" class="form-control">
     </div>
     <div class="col-md-5">
         <div class="pull-right">
@@ -11,7 +11,7 @@
         <button class="btn btn-success" (click)="onAdd()">+</button>
     </div>
 </div>
-<div style="margin-bottom: 9px;" *ngFor="let field of documentType.fields; let i = index" class="row">
+<div style="margin-bottom: 10px;" *ngFor="let field of documentType.fields; let i = index" class="row">
     <div>
         <div class="col-md-4">
             <input [(ngModel)]="field.name" placeholder="Name" type="text" class="form-control">
