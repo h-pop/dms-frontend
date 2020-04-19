@@ -5,15 +5,23 @@ import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { NewDocumentComponent } from './new-document/new-document.component';
 import { DocumentRepositoryComponent } from './document-repository/document-repository.component';
-import { ConfigureComponent } from './configure/configure.component';
+import { ConfigurationComponent } from './configuration/configuration.component';
+import { DocumentTypesComponent } from './configuration/document-types/document-types.component';
+import { OrganizationStructureComponent } from './configuration/organization-structure/organization-structure.component';
+import { DocumentTypeEditComponent } from './configuration/document-types/document-type-edit/document-type-edit.component';
 
 const routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'home' },
     { path: 'home', component: HomeComponent },
     { path: 'new-document', component: NewDocumentComponent },
     { path: 'document-repository', component: DocumentRepositoryComponent },
-    { path: 'configure', component: ConfigureComponent },
-    { path: 'login', component: LoginComponent },
+    { path: 'configuration', component: ConfigurationComponent, children: [
+        { path: 'document-types', component: DocumentTypesComponent },
+        { path: 'document-types/new', component: DocumentTypeEditComponent },
+        { path: 'document-types/:id', component: DocumentTypeEditComponent },
+        { path: 'org-structure', component: OrganizationStructureComponent }
+    ]},
+    { path: 'login', component: LoginComponent }, 
     { path: '**', component: PageNotFoundComponent }
 ];
 

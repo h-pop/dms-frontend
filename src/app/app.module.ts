@@ -13,8 +13,12 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { NewDocumentComponent } from './new-document/new-document.component';
 import { DocumentRepositoryComponent } from './document-repository/document-repository.component';
-import { ConfigureComponent } from './configure/configure.component';
 import { DropdownDirective } from './shared/dropdown.directive';
+import { ConfigurationComponent } from './configuration/configuration.component';
+import { ConfigurationListComponent } from './configuration/configuration-list/configuration-list.component';
+import { DocumentTypesComponent } from './configuration/document-types/document-types.component';
+import { OrganizationStructureComponent } from './configuration/organization-structure/organization-structure.component';
+import { DocumentTypeEditComponent } from './configuration/document-types/document-type-edit/document-type-edit.component';
 
 @NgModule({
     declarations: [
@@ -26,8 +30,12 @@ import { DropdownDirective } from './shared/dropdown.directive';
         HeaderComponent,
         NewDocumentComponent,
         DocumentRepositoryComponent,
-        ConfigureComponent,
-        DropdownDirective
+        ConfigurationComponent,
+        DropdownDirective,
+        ConfigurationListComponent,
+        DocumentTypesComponent,
+        OrganizationStructureComponent,
+        DocumentTypeEditComponent
     ],
     imports: [
         BrowserModule,
