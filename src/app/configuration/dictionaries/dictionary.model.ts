@@ -4,8 +4,8 @@ export class Dictionary {
     values: string[] = [];
 
     constructor(id?: number, name?: string, values?: string[]) {
-        this.id = id;
-        this.name = name;
-        this.values = values;
+        this.id = id || -1;
+        this.name = name || '';
+        this.values = values || [];
     }
 }

@@ -24,7 +24,6 @@ export class DictionaryEditComponent implements OnInit {
     });
     if (this.dictionary == null) {
       this.dictionary = new Dictionary();
-      this.dictionary.values = [];
       this.onAddDictionaryValue();
     }
   }
