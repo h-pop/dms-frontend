@@ -4,8 +4,7 @@ import { DocumentTypesService } from './document-types/document-types.service';
 @Component({
   selector: 'app-configuration',
   templateUrl: './configuration.component.html',
-  styleUrls: ['./configuration.component.css'],
-  providers: [DocumentTypesService]
+  styleUrls: ['./configuration.component.css']
 })
 export class ConfigurationComponent implements OnInit {
 

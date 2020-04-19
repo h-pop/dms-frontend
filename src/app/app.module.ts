@@ -19,6 +19,7 @@ import { ConfigurationListComponent } from './configuration/configuration-list/c
 import { DocumentTypesComponent } from './configuration/document-types/document-types.component';
 import { OrganizationStructureComponent } from './configuration/organization-structure/organization-structure.component';
 import { DocumentTypeEditComponent } from './configuration/document-types/document-type-edit/document-type-edit.component';
+import { DocumentTypesService } from './configuration/document-types/document-types.service';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,7 @@ import { DocumentTypeEditComponent } from './configuration/document-types/docume
         HttpClientModule,
         FormsModule
     ],
-    providers: [LoginService],
+    providers: [LoginService, DocumentTypesService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
