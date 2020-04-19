@@ -23,13 +23,16 @@ export class DocumentTypesComponent implements OnInit {
         }
       );
   }
-  
+
+  onNew() {
+    this.router.navigate(['new'], {relativeTo: this.route})
+  }
+
   onListItemClick(value: string) {
     this.router.navigate([value], {relativeTo: this.route})
   }
 
   onDeleteClick(index: number) {
-    console.log('Deleting: ' + index);
     this.documentTypesService.deleteDocumentType(index);
   }
 

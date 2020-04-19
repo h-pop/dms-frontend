@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <ul class="list-group" role="tablist">
+        <ul class="list-group">
             <a 
                 *ngFor="let documentType of documentTypes; let i = index" 
                 class="list-group-item clearfix" 
@@ -13,6 +13,6 @@
 </div>
 <div class="row pull-right">
     <div class="col-md-12">
-        <button class="btn btn-success">New</button>
+        <button class="btn btn-success" (click)="onNew()">New</button>
     </div>
 </div>

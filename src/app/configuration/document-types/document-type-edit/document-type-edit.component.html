@@ -1,1 +1,29 @@
-<p>document-type-edit works!</p>
+<div style="margin-bottom: 4px;" class="row">
+    <div class="col-md-6">
+        <h4>{{ documentType.name }}</h4>
+    </div>
+    <div class="col-md-5">
+        <div class="pull-right">
+            <button class="btn btn-primary" (click)="onSaveChanges()">Save changes</button>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-success" (click)="onAdd()">+</button>
+    </div>
+</div>
+<div style="margin-bottom: 9px;" *ngFor="let field of documentType.fields; let i = index" class="row">
+    <div>
+        <div class="col-md-4">
+            <input [(ngModel)]="field.name" placeholder="Name" type="text" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <input [(ngModel)]="field.type" placeholder="Type" type="text" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <input [(ngModel)]="field.defaultValue" placeholder="Default value" type="text" class="form-control">
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-danger" (click)="onDelete(i)">X</button>
+        </div>
+    </div>
+</div>
