@@ -19,6 +19,7 @@ export class DocumentTypesService {
       new Field("Net value", 'text', '')
     ]),
   ];
+  fieldTypes = ['text', 'textarea', 'number', 'dictionary', 'date', 'daterange', 'user'];
 
   getDocumentTypes(): DocumentType[] {
     return this.documentTypes.slice();
@@ -35,5 +36,9 @@ export class DocumentTypesService {
         return documentType;
       }
     }
+  }
+
+  getFieldTypes(): string[] {
+    return this.fieldTypes;
   }
 }

@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class DocumentTypesComponent implements OnInit {
 
-  documentTypes: DocumentType[] = [];
+  documentTypes: DocumentType[];
 
   constructor(private documentTypesService: DocumentTypesService, private router: Router, private route: ActivatedRoute) { }
 
@@ -25,11 +25,11 @@ export class DocumentTypesComponent implements OnInit {
   }
 
   onNew() {
-    this.router.navigate(['new'], {relativeTo: this.route})
+    this.router.navigate(['new'], { relativeTo: this.route });
   }
 
   onListItemClick(value: string) {
-    this.router.navigate([value], {relativeTo: this.route})
+    this.router.navigate([value], { relativeTo: this.route });
   }
 
   onDeleteClick(index: number) {

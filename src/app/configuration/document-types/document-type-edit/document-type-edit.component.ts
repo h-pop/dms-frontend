@@ -11,10 +11,13 @@ import { DocumentType, Field } from '../document-type.model';
 export class DocumentTypeEditComponent implements OnInit {
 
   documentType: DocumentType;
+  fieldTypes: string[];
 
   constructor(private route: ActivatedRoute, private documentTypeService: DocumentTypesService) { }
 
   ngOnInit(): void {
+    this.fieldTypes = this.documentTypeService.getFieldTypes();
+
     const documentTypeId = +this.route.snapshot.params['id'];
     this.documentType = this.documentTypeService.getDocumentType(documentTypeId);
     this.route.params
@@ -23,17 +26,21 @@ export class DocumentTypeEditComponent implements OnInit {
           this.documentType = this.documentTypeService.getDocumentType(+params['id']);
         }
       );
+    if (this.documentType == null) {
+      this.documentType = new DocumentType();
+      this.onAddField();
+    }
   }
 
-  onAdd() {
-    this.documentType.fields.push(new Field('','',''));
+  onAddField() {
+    this.documentType.fields.push(new Field());
+  }
+
+  onDeleteField(index: number) {
+    this.documentType.fields.splice(index, 1);
   }
 
   onSaveChanges() {
-    
-  }
 
-  onDelete(index: number) {
-    this.documentType.fields.splice(index, 1);
   }
 }
