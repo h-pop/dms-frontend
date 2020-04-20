@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { DictionariesService } from "./dictionaries.service";
-import { Dictionary } from "./dictionary.model";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { DictionariesService } from './dictionaries.service';
+import { Dictionary } from './dictionary.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: "app-dictionaries",
-  templateUrl: "./dictionaries.component.html",
-  styleUrls: ["./dictionaries.component.css"],
+  selector: 'app-dictionaries',
+  templateUrl: './dictionaries.component.html',
+  styleUrls: ['./dictionaries.component.css'],
 })
 export class DictionariesComponent implements OnInit {
   dictionaries: Dictionary[];
@@ -26,7 +26,7 @@ export class DictionariesComponent implements OnInit {
   }
 
   onNew() {
-    this.router.navigate(["new"], { relativeTo: this.route });
+    this.router.navigate(['new'], { relativeTo: this.route });
   }
 
   onListItemClick(dictionaryId: number) {

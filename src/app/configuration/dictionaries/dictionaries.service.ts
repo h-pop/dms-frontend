@@ -21,7 +21,7 @@ export class DictionariesService {
   }
 
   getDictionary(dictionaryId: any): Dictionary {
-    for (let dictionary of this.dictionaries) {
+    for (const dictionary of this.dictionaries) {
       if (dictionary.id === dictionaryId) {
         return JSON.parse(JSON.stringify(dictionary));
       }
@@ -30,7 +30,7 @@ export class DictionariesService {
   updateDictionary(dictionary: Dictionary) {
     this.dictionaries = this.dictionaries.filter(
       (dict: Dictionary) => {
-        return dict.id != dictionary.id;
+        return dict.id !== dictionary.id;
       }
     );
     this.dictionaries.push(dictionary);

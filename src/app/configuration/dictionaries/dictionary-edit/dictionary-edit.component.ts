@@ -1,27 +1,35 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Params } from "@angular/router";
-import { DictionariesService } from "../dictionaries.service";
-import { Dictionary } from "../dictionary.model";
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { DictionariesService } from '../dictionaries.service';
+import { Dictionary } from '../dictionary.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: "app-dictionary-edit",
-  templateUrl: "./dictionary-edit.component.html",
-  styleUrls: ["./dictionary-edit.component.css"],
+  selector: 'app-dictionary-edit',
+  templateUrl: './dictionary-edit.component.html',
+  styleUrls: ['./dictionary-edit.component.css'],
 })
 export class DictionaryEditComponent implements OnInit {
+
+  // TODO Switch to reactive approach - in this case template driven approach sucks
+
+  @ViewChild('f') dictionaryEditForm: NgForm;
   dictionary: Dictionary;
+  dictionaryValues: string[];
 
   constructor(
     private route: ActivatedRoute,
     private dictionariesService: DictionariesService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    const dictionaryId = +this.route.snapshot.params["id"];
+    this.fetchDictionary();
+  }
+
+  fetchDictionary() {
+    const dictionaryId = +this.route.snapshot.params['id'];
     this.dictionary = this.dictionariesService.getDictionary(dictionaryId);
-    this.route.params.subscribe((params: Params) => {
-      this.dictionary = this.dictionariesService.getDictionary(+params["id"]);
-    });
+    this.dictionaryValues = this.dictionary.values.slice();
     if (this.dictionary == null) {
       this.dictionary = new Dictionary();
       this.onAddDictionaryValue();
@@ -29,20 +37,23 @@ export class DictionaryEditComponent implements OnInit {
   }
 
   onAddDictionaryValue() {
-    this.dictionary.values.push("");
+    this.dictionaryValues.push('');
   }
 
   onDeleteDictionaryValue(index: number) {
-    this.dictionary.values.splice(index, 1);
+    this.dictionaryValues.splice(index, 1);
   }
 
-  onSaveChanges() {
-    if(!this.isDirty()) {
-      return;
+  onSubmit() {
+    this.dictionary.name = this.dictionaryEditForm.value.dictionaryName;
+    this.dictionary.values = [];
+
+    const dictionaryValueGroup = this.dictionaryEditForm.value.dictionaryValueGroup;
+    let counter = 1;
+    while (dictionaryValueGroup[counter]) {
+      this.dictionary.values.push(dictionaryValueGroup[counter++]);
     }
     this.dictionariesService.updateDictionary(this.dictionary);
   }
-  isDirty() : boolean {
-    return true; //TODO
-  }
+
 }

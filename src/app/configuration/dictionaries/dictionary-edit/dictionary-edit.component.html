@@ -1,21 +1,46 @@
-<div style="margin-bottom: 10px;" class="row">
+<form (ngSubmit)="onSubmit()"
+      #f="ngForm">
+  <div style="margin-bottom: 10px;"
+       class="row">
     <div class="col-md-6">
-        <input [(ngModel)]="dictionary.name" placeholder="Dictionary name" type="text" class="form-control">
+      <input placeholder="Dictionary name"
+             type="text"
+             class="form-control"
+             [ngModel]="dictionary.name"
+             name="dictionaryName"
+             required>
     </div>
     <div class="col-md-5">
-        <div class="pull-right">
-            <button class="btn btn-primary" (click)="onSaveChanges()">Save changes</button>
-        </div>
+      <div class="pull-right">
+        <button [disabled]="!f.valid"
+                class="btn btn-primary"
+                type="submit">Save changes</button>
+      </div>
     </div>
     <div class="col-md-1">
-        <button class="btn btn-success" (click)="onAddDictionaryValue()">+</button>
+      <button class="btn btn-success"
+              (click)="onAddDictionaryValue()"
+              type="button">+</button>
     </div>
-</div>
-<div style="margin-bottom: 10px;" *ngFor="let value of dictionary.values; let i = index" class="row">
-    <div class="col-md-11 col-sm-5">
-        <input [value]="value" placeholder="Dictionary value" type="text" class="form-control">
+  </div>
+  <div ngModelGroup="dictionaryValueGroup"
+       #dictionaryValueGroup="ngModelGroup">
+    <div style="margin-bottom: 10px;"
+         *ngFor="let value of dictionaryValues; let i = index"
+         class="row">
+      <div class="col-md-11 col-sm-5">
+        <input [value]="value"
+               placeholder="Dictionary value"
+               type="text"
+               class="form-control"
+               required
+               [ngModel]="value"
+               [name]='i+1'>
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-danger"
+                (click)="onDeleteDictionaryValue(i)">X</button>
+      </div>
     </div>
-    <div class="col-md-1">
-        <button class="btn btn-danger" (click)="onDeleteDictionaryValue(i)">X</button>
-    </div>
-</div>
+  </div>
+</form>
