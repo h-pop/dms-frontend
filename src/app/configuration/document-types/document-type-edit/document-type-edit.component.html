@@ -1,29 +1,60 @@
-<div style="margin-bottom: 10px;" class="row">
-  <div class="col-md-6">
-    <input [(ngModel)]="documentType.name" placeholder="Document type" type="text" class="form-control">
-  </div>
-  <div class="col-md-5">
-    <div class="pull-right">
-      <button class="btn btn-primary" (click)="onSaveChanges()">Save changes</button>
+<form [formGroup]="mainFormGroup"
+      (ngSubmit)="onSubmit()">
+  <div style="margin-bottom: 10px;"
+       class="row">
+    <div class="col-md-6">
+      <input placeholder="Document type"
+             type="text"
+             class="form-control"
+             formControlName="documentTypeName">
+    </div>
+    <div class="col-md-5">
+      <div class="pull-right">
+        <button class="btn btn-primary"
+                type="submit"
+                [disabled]="!mainFormGroup.valid">Save changes</button>
+      </div>
+    </div>
+    <div class="col-md-1">
+      <button class="btn btn-success"
+              type="button"
+              (click)="onAddField()">+</button>
     </div>
   </div>
-  <div class="col-md-1">
-    <button class="btn btn-success" (click)="onAddField()">+</button>
+  <div formArrayName="fields">
+    <div style="margin-bottom: 10px;"
+         class="row"
+         *ngFor="let fieldControl of getFieldsControls(); let i = index">
+      <div [formGroupName]="i">
+        <input type="hidden" formControlName="id">
+        <div class="col-md-4">
+          <input formControlName="name"
+                 placeholder="Name"
+                 type="text"
+                 class="form-control">
+        </div>
+        <div class="col-md-4">
+          <select formControlName="type"
+                  class="form-control"
+                  placeholder="Type">
+            <option *ngFor="let fieldType of fieldTypes"
+                    [value]="fieldType">{{fieldType}}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <input formControlName="defaultValue"
+                 placeholder="Default value"
+                 type="text"
+                 class="form-control">
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-danger"
+                  type="button"
+                  (click)="onDeleteField(i)">X</button>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-<div style="margin-bottom: 10px;" *ngFor="let field of documentType.fields; let i = index" class="row">
-  <div class="col-md-4">
-    <input [(ngModel)]="field.name" placeholder="Name" type="text" class="form-control">
-  </div>
-  <div class="col-md-4">
-    <select [(ngModel)]="field.type" class="form-control" placeholder="Type">
-      <option *ngFor="let fieldType of fieldTypes" [value]="fieldType">{{fieldType}}</option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <input [(ngModel)]="field.defaultValue" placeholder="Default value" type="text" class="form-control">
-  </div>
-  <div class="col-md-1">
-    <button class="btn btn-danger" (click)="onDeleteField(i)">X</button>
-  </div>
-</div>
+  <span *ngIf="!mainFormGroup.valid && mainFormGroup.touched"
+        class="help-block">Please enter a valid data!</span>
+</form>

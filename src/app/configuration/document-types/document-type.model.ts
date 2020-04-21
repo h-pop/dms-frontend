@@ -13,13 +13,15 @@ export class DocumentType {
 
 export class Field {
 
+  id: number;
   name: string;
   type: string;
   defaultValue: string;
 
-  constructor(name?: string, type?: string, defaultValue?: string) {
+  constructor(name?: string, type?: string, defaultValue?: string, id?: number) {
     this.name = name;
-    this.type = type || 'text';
+    this.type = type;
     this.defaultValue = defaultValue;
+    this.id = id || Math.floor(Math.random() * 100000) + 10;
   }
 }

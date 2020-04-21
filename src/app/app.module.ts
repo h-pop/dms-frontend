@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginService } from './login/login.service';
 import { OauthComponent } from './oauth/oauth.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -47,7 +47,8 @@ import { DictionaryEditComponent } from './configuration/dictionaries/dictionary
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [LoginService, DocumentTypesService, DictionariesService],
     bootstrap: [AppComponent]

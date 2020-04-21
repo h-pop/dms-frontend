@@ -1,18 +1,20 @@
 <div class="row">
-    <div class="col-md-12">
-        <ul class="list-group">
-            <a 
-                *ngFor="let documentType of documentTypes; let i = index" 
-                class="list-group-item clearfix" 
-                style="cursor: pointer;" 
-                (click)="onListItemClick(documentType.id)">{{ documentType.name }}
-                <span class="badge" style="background-color: #d9534f;" (click)="onDeleteClick(i)">X</span>
-            </a>
-        </ul>
-    </div>
+  <div class="col-md-12">
+    <ul class="list-group">
+        <a *ngFor="let documentType of documentTypes; let i = index" style="cursor: pointer;"
+           class="list-group-item clearfix"
+           (click)="onListItemClick(documentType.id)">
+          <span class="badge"
+                style="background-color: #d9534f;"
+                (click)="onDeleteClick(i)">X</span>
+          {{ documentType.name }}
+        </a>
+    </ul>
+  </div>
 </div>
 <div class="row pull-right">
-    <div class="col-md-12">
-        <button class="btn btn-success" (click)="onNew()">New</button>
-    </div>
+  <div class="col-md-12">
+    <button class="btn btn-success"
+            (click)="onNew()">New</button>
+  </div>
 </div>
