@@ -23,6 +23,7 @@ import { DocumentTypesService } from './configuration/document-types/document-ty
 import { DictionariesComponent } from './configuration/dictionaries/dictionaries.component';
 import { DictionariesService } from './configuration/dictionaries/dictionaries.service';
 import { DictionaryEditComponent } from './configuration/dictionaries/dictionary-edit/dictionary-edit.component';
+import { IdGenerator } from './shared/id-generator.service';
 
 @NgModule({
     declarations: [
@@ -50,7 +51,7 @@ import { DictionaryEditComponent } from './configuration/dictionaries/dictionary
         FormsModule,
         ReactiveFormsModule
     ],
-    providers: [LoginService, DocumentTypesService, DictionariesService],
+    providers: [LoginService, DocumentTypesService, DictionariesService, IdGenerator],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

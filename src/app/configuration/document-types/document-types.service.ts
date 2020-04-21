@@ -1,6 +1,8 @@
 import { DocumentType, Field } from './document-type.model';
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
+import { IdGenerator } from 'src/app/shared/id-generator.service';
 
+@Injectable()
 export class DocumentTypesService {
   documentTypesChanged = new EventEmitter<DocumentType[]>();
   documentTypes: DocumentType[] = [
@@ -21,6 +23,8 @@ export class DocumentTypesService {
   ];
   fieldTypes = ['text', 'textarea', 'number', 'dictionary', 'date', 'daterange', 'user'];
 
+  constructor(private idGenerator: IdGenerator) { }
+
   getDocumentTypes(): DocumentType[] {
     return this.documentTypes.slice();
   }
@@ -39,11 +43,11 @@ export class DocumentTypesService {
   }
 
   updateDocumentType(documentType: DocumentType) {
-    // TODO temporary solution without backend aplication
-    if (documentType.id == null) {
-      documentType.id = Math.floor(Math.random() * 100000) + 10;
-      this.documentTypes.push(documentType);
-      this.documentTypesChanged.emit(this.getDocumentTypes());
+    if (documentType.id != null) {
+      return;
     }
+    documentType.id = this.idGenerator.next();
+    this.documentTypes.push(documentType);
+    this.documentTypesChanged.emit(this.getDocumentTypes());
   }
 }

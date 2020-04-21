@@ -22,6 +22,6 @@ export class Field {
     this.name = name;
     this.type = type;
     this.defaultValue = defaultValue;
-    this.id = id || Math.floor(Math.random() * 100000) + 10;
+    this.id = id;
   }
 }

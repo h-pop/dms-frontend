@@ -1,46 +1,47 @@
-<form (ngSubmit)="onSubmit()"
-      #f="ngForm">
+<form [formGroup]="mainFormGroup"
+      (ngSubmit)="onSubmit()">
   <div style="margin-bottom: 10px;"
        class="row">
     <div class="col-md-6">
       <input placeholder="Dictionary name"
              type="text"
              class="form-control"
-             [ngModel]="dictionary.name"
-             name="dictionaryName"
-             required>
+             formControlName="dictionaryName">
+      <span *ngIf="!mainFormGroup.get('dictionaryName').valid && mainFormGroup.get('dictionaryName').touched"
+            class="help-block">This value is required!</span>
     </div>
     <div class="col-md-5">
       <div class="pull-right">
-        <button [disabled]="!f.valid"
-                class="btn btn-primary"
-                type="submit">Save changes</button>
+        <button class="btn btn-primary"
+                type="submit"
+                [disabled]="!mainFormGroup.valid">Save changes</button>
       </div>
     </div>
     <div class="col-md-1">
       <button class="btn btn-success"
-              (click)="onAddDictionaryValue()"
-              type="button">+</button>
+              type="button"
+              (click)="onAddDictionaryValue()">+</button>
     </div>
   </div>
-  <div ngModelGroup="dictionaryValueGroup"
-       #dictionaryValueGroup="ngModelGroup">
+  <div formArrayName="dictionaryValues">
     <div style="margin-bottom: 10px;"
-         *ngFor="let value of dictionaryValues; let i = index"
-         class="row">
+         class="row"
+         *ngFor="let dictionaryValueControl of getDictionaryValueControls(); let i = index">
       <div class="col-md-11 col-sm-5">
         <input [value]="value"
                placeholder="Dictionary value"
                type="text"
                class="form-control"
-               required
-               [ngModel]="value"
-               [name]='i+1'>
+               [formControlName]="i">
+        <span *ngIf="isDictionaryValueMissing(i)"
+              class="help-block">This value is required!</span>
       </div>
       <div class="col-md-1">
         <button class="btn btn-danger"
                 (click)="onDeleteDictionaryValue(i)">X</button>
       </div>
     </div>
+    <span *ngIf="noDictionaryValues()"
+          class="help-block">At least one dictionary value is required!</span>
   </div>
 </form>

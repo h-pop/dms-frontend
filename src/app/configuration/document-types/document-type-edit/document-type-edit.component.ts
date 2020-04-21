@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DocumentTypesService } from '../document-types.service';
 import { DocumentType, Field } from '../document-type.model';
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
+import { IdGenerator } from 'src/app/shared/id-generator.service';
 
 @Component({
   selector: 'app-document-type-edit',
@@ -16,7 +17,7 @@ export class DocumentTypeEditComponent implements OnInit {
   private documentType: DocumentType;
   private fieldTypes: string[];
 
-  constructor(private route: ActivatedRoute, private router: Router, private documentTypeService: DocumentTypesService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private documentTypeService: DocumentTypesService, private idGenerator: IdGenerator) { }
 
   ngOnInit(): void {
     this.fetchFieldTypes();
@@ -82,7 +83,7 @@ export class DocumentTypeEditComponent implements OnInit {
     // create/update
     for (const field of this.mainFormGroup.value.fields) {
       if (field.id == null) {
-        this.documentType.fields.push(new Field(field.name, field.type, field.defaultValue));
+        this.documentType.fields.push(new Field(field.name, field.type, field.defaultValue, this.idGenerator.next()));
         continue;
       }
       const existingField = this.documentType.fields.find((value: Field) => value.id === field.id);

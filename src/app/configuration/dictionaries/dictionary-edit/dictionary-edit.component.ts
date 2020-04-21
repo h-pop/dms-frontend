@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DictionariesService } from '../dictionaries.service';
 import { Dictionary } from '../dictionary.model';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-dictionary-edit',
@@ -11,49 +11,87 @@ import { NgForm } from '@angular/forms';
 })
 export class DictionaryEditComponent implements OnInit {
 
-  // TODO Switch to reactive approach - in this case template driven approach sucks
+  mainFormGroup: FormGroup;
 
-  @ViewChild('f') dictionaryEditForm: NgForm;
-  dictionary: Dictionary;
-  dictionaryValues: string[];
+  private dictionary: Dictionary;
 
   constructor(
     private route: ActivatedRoute,
-    private dictionariesService: DictionariesService
+    private dictionariesService: DictionariesService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.fetchDictionary();
+    this.initializeMainFormGroup();
   }
 
-  fetchDictionary() {
-    const dictionaryId = +this.route.snapshot.params['id'];
+  private fetchDictionary() {
+    const dictionaryId = +this.route.snapshot.params.id;
     this.dictionary = this.dictionariesService.getDictionary(dictionaryId);
-    this.dictionaryValues = this.dictionary.values.slice();
     if (this.dictionary == null) {
       this.dictionary = new Dictionary();
-      this.onAddDictionaryValue();
     }
   }
 
-  onAddDictionaryValue() {
-    this.dictionaryValues.push('');
+  private initializeMainFormGroup() {
+    this.mainFormGroup = new FormGroup({
+      dictionaryName: new FormControl(this.dictionary.name, Validators.required),
+      dictionaryValues: new FormArray([], this.hasAtLeastOneValue)
+    });
+    this.dictionary.values.forEach(element => {
+      this.onAddDictionaryValue(element);
+    });
+  }
+
+  private getDictionaryValuesFormArray(): FormArray {
+    return (this.mainFormGroup.get('dictionaryValues') as FormArray);
+  }
+
+  hasAtLeastOneValue(formArray: FormArray): { [s: string]: boolean } {
+    if (formArray.value.length === 0) {
+      return { 'noDictionaryValues': true };
+    }
+    return null;
+  }
+
+  onAddDictionaryValue(element: string) {
+    const control = new FormControl(element || null, Validators.required);
+    this.getDictionaryValuesFormArray().push(control);
+  }
+
+  getDictionaryValueControls() {
+    return this.getDictionaryValuesFormArray().controls;
   }
 
   onDeleteDictionaryValue(index: number) {
-    this.dictionaryValues.splice(index, 1);
+    this.getDictionaryValuesFormArray().removeAt(index);
+  }
+
+  isDictionaryValueMissing(index: number) {
+    if (this.mainFormGroup.valid) {
+      return false;
+    }
+    const dictionaryValueControl = this.mainFormGroup.get('dictionaryValues.' + index);
+    return dictionaryValueControl.touched
+      && dictionaryValueControl.errors
+      && dictionaryValueControl.errors['required'];
+  }
+
+  noDictionaryValues() {
+    if (this.mainFormGroup.valid) {
+      return false;
+    }
+    const dictionaryValues = this.mainFormGroup.get('dictionaryValues');
+    return dictionaryValues.errors
+      && dictionaryValues.errors['noDictionaryValues'];
   }
 
   onSubmit() {
-    this.dictionary.name = this.dictionaryEditForm.value.dictionaryName;
-    this.dictionary.values = [];
-
-    const dictionaryValueGroup = this.dictionaryEditForm.value.dictionaryValueGroup;
-    let counter = 1;
-    while (dictionaryValueGroup[counter]) {
-      this.dictionary.values.push(dictionaryValueGroup[counter++]);
-    }
+    this.dictionary.name = this.mainFormGroup.value.dictionaryName;
+    this.dictionary.values = this.mainFormGroup.value.dictionaryValues;
     this.dictionariesService.updateDictionary(this.dictionary);
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
 }
