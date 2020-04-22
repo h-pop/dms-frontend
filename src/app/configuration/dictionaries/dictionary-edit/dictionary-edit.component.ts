@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DictionariesService } from '../dictionaries.service';
-import { Dictionary } from '../dictionary.model';
+import { Dictionary, DictionaryValue } from '../dictionary.model';
 import { NgForm, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { IdGenerator } from 'src/app/shared/id-generator.service';
 
 @Component({
   selector: 'app-dictionary-edit',
@@ -18,7 +19,8 @@ export class DictionaryEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private dictionariesService: DictionariesService,
-    private router: Router
+    private router: Router,
+    private idGenerator: IdGenerator
   ) { }
 
   ngOnInit(): void {
@@ -39,7 +41,7 @@ export class DictionaryEditComponent implements OnInit {
       dictionaryName: new FormControl(this.dictionary.name, Validators.required),
       dictionaryValues: new FormArray([], this.hasAtLeastOneValue)
     });
-    this.dictionary.values.forEach(element => {
+    this.dictionary.dictionaryValues.forEach(element => {
       this.onAddDictionaryValue(element);
     });
   }
@@ -55,8 +57,11 @@ export class DictionaryEditComponent implements OnInit {
     return null;
   }
 
-  onAddDictionaryValue(element: string) {
-    const control = new FormControl(element || null, Validators.required);
+  onAddDictionaryValue(element?: DictionaryValue) {
+    const control = new FormGroup({
+      id: new FormControl(element && element.id),
+      name: new FormControl(element && element.name, Validators.required)
+    });
     this.getDictionaryValuesFormArray().push(control);
   }
 
@@ -89,7 +94,26 @@ export class DictionaryEditComponent implements OnInit {
 
   onSubmit() {
     this.dictionary.name = this.mainFormGroup.value.dictionaryName;
-    this.dictionary.values = this.mainFormGroup.value.dictionaryValues;
+    // delete
+    for (let index = 0; index < this.dictionary.dictionaryValues.length; index++) {
+      const element = this.dictionary.dictionaryValues[index];
+      const existingField = this.mainFormGroup.value.dictionaryValues.find((value: DictionaryValue) => value.id === element.id);
+      if (!existingField) {
+        this.dictionary.dictionaryValues.splice(index, 1);
+      }
+    }
+    // create/update
+    for (const dictionaryValue of this.mainFormGroup.value.dictionaryValues) {
+      if (dictionaryValue.id == null) {
+        this.dictionary.dictionaryValues.push(new DictionaryValue(this.dictionary.id, dictionaryValue.name, this.idGenerator.next()));
+        continue;
+      }
+      const existingField = this.dictionary.dictionaryValues.find((value: DictionaryValue) => value.id === dictionaryValue.id);
+      if (existingField) {
+        existingField.name = dictionaryValue.name;
+      }
+    }
+    console.log(this.dictionary);
     this.dictionariesService.updateDictionary(this.dictionary);
     this.router.navigate(['..'], { relativeTo: this.route });
   }

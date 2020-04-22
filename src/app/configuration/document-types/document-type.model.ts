@@ -16,12 +16,14 @@ export class Field {
   id: number;
   name: string;
   type: string;
+  defaultValueParent: string;
   defaultValue: string;
 
-  constructor(name?: string, type?: string, defaultValue?: string, id?: number) {
+  constructor(name?: string, type?: string, defaultValue?: string, id?: number, defaultValueParent?: string) {
     this.name = name;
     this.type = type;
     this.defaultValue = defaultValue;
+    this.defaultValueParent = defaultValueParent;
     this.id = id;
   }
 }

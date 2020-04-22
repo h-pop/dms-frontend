@@ -27,18 +27,22 @@
     <div style="margin-bottom: 10px;"
          class="row"
          *ngFor="let dictionaryValueControl of getDictionaryValueControls(); let i = index">
-      <div class="col-md-11 col-sm-5">
-        <input [value]="value"
-               placeholder="Dictionary value"
-               type="text"
-               class="form-control"
-               [formControlName]="i">
-        <span *ngIf="isDictionaryValueMissing(i)"
-              class="help-block">This value is required!</span>
-      </div>
-      <div class="col-md-1">
-        <button class="btn btn-danger"
-                (click)="onDeleteDictionaryValue(i)">X</button>
+      <div [formGroupName]="i">
+        <input type="hidden"
+               formControlName="id">
+        <div class="col-md-11 col-sm-5">
+          <input [value]="value"
+                 placeholder="Dictionary value"
+                 type="text"
+                 class="form-control"
+                 formControlName="name">
+          <span *ngIf="isDictionaryValueMissing(i)"
+                class="help-block">This value is required!</span>
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-danger"
+                  (click)="onDeleteDictionaryValue(i)">X</button>
+        </div>
       </div>
     </div>
     <span *ngIf="noDictionaryValues()"

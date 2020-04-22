@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentTypesService } from '../document-types.service';
 import { DocumentType, Field } from '../document-type.model';
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { IdGenerator } from 'src/app/shared/id-generator.service';
 import { DictionariesService } from '../../dictionaries/dictionaries.service';
-import { Dictionary } from '../../dictionaries/dictionary.model';
+import { Dictionary, DictionaryValue } from '../../dictionaries/dictionary.model';
 
 @Component({
   selector: 'app-document-type-edit',
@@ -14,24 +14,27 @@ import { Dictionary } from '../../dictionaries/dictionary.model';
 })
 export class DocumentTypeEditComponent implements OnInit {
 
+
   mainFormGroup: FormGroup;
-  selectedDictionaryValues: string[];
+  // FIXME problem with two or more dictionary type fields 
+  selectedDictionaryValues: DictionaryValue[];
 
   private documentType: DocumentType;
+  private dictionaries: Dictionary[];
   private fieldTypes: string[];
 
-  private dictionaries: Dictionary[];
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private documentTypeService: DocumentTypesService,
+    private idGenerator: IdGenerator,
+    private dictionariesService: DictionariesService) { }
 
-  constructor(private route: ActivatedRoute, private router: Router, private documentTypeService: DocumentTypesService, private idGenerator: IdGenerator, private dictionariesService: DictionariesService) { }
 
   ngOnInit(): void {
-    this.fetchFieldTypes();
+    this.fieldTypes = this.documentTypeService.getFieldTypes();
+    this.dictionaries = this.dictionariesService.getDictionaries();
     this.fetchDocumentTypes();
     this.initializeMainFormGroup();
-  }
-
-  private fetchFieldTypes() {
-    this.fieldTypes = this.documentTypeService.getFieldTypes();
   }
 
   private fetchDocumentTypes() {
@@ -58,35 +61,52 @@ export class DocumentTypeEditComponent implements OnInit {
 
   onAddField(field?: Field) {
     const control = new FormGroup({
-      id: new FormControl(field && field.id || null),
-      name: new FormControl(field && field.name || null, Validators.required),
+      id: new FormControl(field && field.id),
+      name: new FormControl(field && field.name, Validators.required),
       type: new FormControl(field && field.type || this.fieldTypes[0], Validators.required),
-      defaultValue: new FormControl(field && field.defaultValue || null),
+      defaultValue: new FormControl(field && field.defaultValue),
+      defaultValueParent: new FormControl(field && field.defaultValueParent)
     });
+    if (field && field.defaultValueParent) {
+      this.onDictionaryChange(field.defaultValueParent);
+    }
     this.getFieldsFormArray().push(control);
+  }
+
+  onTypeChange(fieldIndex: number) {
+    const fieldControl = this.getFieldsControls()[fieldIndex];
+    fieldControl.patchValue({
+      defaultValue: null,
+      defaultValueParent: null
+    });
+    this.selectedDictionaryValues = [];
   }
 
   getFieldsControls() {
     return this.getFieldsFormArray().controls;
   }
 
-  getDictionaries(): Dictionary[] {
-    if(this.dictionaries == null) {
-      this.dictionaries = this.dictionariesService.getDictionaries();
-    }
-    return this.dictionaries;
+  // TODO get users from service
+  getUsers(): string[] {
+    return ['User 1', 'User 2'];
   }
 
   onDeleteField(index: number) {
     this.getFieldsFormArray().removeAt(index);
   }
 
-  onDictionaryChange(value: number) {
+  onDictionaryChange(value: string) {
+    let found = false;
+    const valueAsNumber = +value;
     this.dictionaries.forEach(dictionary => {
-      if(dictionary.id == value) {
-        this.selectedDictionaryValues = dictionary.values;
+      if (dictionary.id === valueAsNumber) {
+        this.selectedDictionaryValues = dictionary.dictionaryValues;
+        found = true;
       }
     });
+    if (!found) {
+      this.selectedDictionaryValues = [];
+    }
   }
 
   onSubmit() {
@@ -111,6 +131,7 @@ export class DocumentTypeEditComponent implements OnInit {
         existingField.name = field.name;
         existingField.type = field.type;
         existingField.defaultValue = field.defaultValue;
+        existingField.defaultValueParent = field.defaultValueParent;
       }
     }
     this.documentTypeService.updateDocumentType(this.documentType);

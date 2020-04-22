@@ -1,4 +1,4 @@
-import { Dictionary } from "./dictionary.model";
+import { Dictionary, DictionaryValue } from './dictionary.model';
 import { Subject } from 'rxjs';
 import { IdGenerator } from 'src/app/shared/id-generator.service';
 import { Injectable } from '@angular/core';
@@ -7,15 +7,15 @@ import { Injectable } from '@angular/core';
 export class DictionariesService {
   dictionariesChanged = new Subject<Dictionary[]>();
   dictionaries: Dictionary[] = [
-    new Dictionary(1, "Status", [
-      "New",
-      "Pending approval",
-      "Approved",
-      "Correction needed",
+    new Dictionary(1, 'Status', [
+      new DictionaryValue(1, 'New', 1),
+      new DictionaryValue(1, 'Pending approval', 2),
+      new DictionaryValue(1, 'Approved', 3),
+      new DictionaryValue(1, 'Correction needed', 4)
     ]),
-    new Dictionary(2, "Office address", [
-      "Wiejska 1/20, Warsaw",
-      "St. Martin Street 2/12, Posen",
+    new Dictionary(2, 'Office address', [
+      new DictionaryValue(2, 'Wiejska 1/20, Warsaw', 5),
+      new DictionaryValue(2, 'St. Martin Street 2/12, Posen', 6),
     ]),
   ];
 
@@ -24,6 +24,10 @@ export class DictionariesService {
   getDictionaries(): Dictionary[] {
     return this.dictionaries.slice();
   }
+
+  // getDictionaryByValueId(dictionaryValueId): Dictionary {
+
+  // }
 
   getDictionary(dictionaryId: any): Dictionary {
     return this.dictionaries.find((value) => value.id === dictionaryId);

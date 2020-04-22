@@ -7,17 +7,17 @@ export class DocumentTypesService {
   documentTypesChanged = new EventEmitter<DocumentType[]>();
   documentTypes: DocumentType[] = [
     new DocumentType(1, 'VAT Invoice', [
-      new Field('Description', 'text', '', 1),
-      new Field('Company 1', 'text', '', 2),
-      new Field('Company 2', 'text', '', 3),
-      new Field('Net value', 'text', '', 4)
+      new Field('Description', 'textarea', 'Default description', 1),
+      new Field('Company 1', 'text', 'Some company', 2),
+      new Field('Status', 'dictionary', '', 3),
+      new Field('Net value', 'number', '', 4),
+      new Field('Accepting user', 'user', '', 9)
     ]),
     new DocumentType(2, 'Leave request', [
-      new Field('From', 'text', '', 5),
-      new Field('to', 'text', '', 6),
+      new Field('From', 'date', '', 5),
+      new Field('to', 'date', '', 6),
       new Field('Description', 'text', '', 7),
       new Field('Company 1', 'text', '', 8),
-      new Field('Accepting user', 'text', '', 9),
       new Field('Net value', 'text', '', 10)
     ]),
   ];
