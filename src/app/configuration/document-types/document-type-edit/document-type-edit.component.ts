@@ -4,6 +4,8 @@ import { DocumentTypesService } from '../document-types.service';
 import { DocumentType, Field } from '../document-type.model';
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { IdGenerator } from 'src/app/shared/id-generator.service';
+import { DictionariesService } from '../../dictionaries/dictionaries.service';
+import { Dictionary } from '../../dictionaries/dictionary.model';
 
 @Component({
   selector: 'app-document-type-edit',
@@ -13,11 +15,14 @@ import { IdGenerator } from 'src/app/shared/id-generator.service';
 export class DocumentTypeEditComponent implements OnInit {
 
   mainFormGroup: FormGroup;
+  selectedDictionaryValues: string[];
 
   private documentType: DocumentType;
   private fieldTypes: string[];
 
-  constructor(private route: ActivatedRoute, private router: Router, private documentTypeService: DocumentTypesService, private idGenerator: IdGenerator) { }
+  private dictionaries: Dictionary[];
+
+  constructor(private route: ActivatedRoute, private router: Router, private documentTypeService: DocumentTypesService, private idGenerator: IdGenerator, private dictionariesService: DictionariesService) { }
 
   ngOnInit(): void {
     this.fetchFieldTypes();
@@ -65,8 +70,23 @@ export class DocumentTypeEditComponent implements OnInit {
     return this.getFieldsFormArray().controls;
   }
 
+  getDictionaries(): Dictionary[] {
+    if(this.dictionaries == null) {
+      this.dictionaries = this.dictionariesService.getDictionaries();
+    }
+    return this.dictionaries;
+  }
+
   onDeleteField(index: number) {
     this.getFieldsFormArray().removeAt(index);
+  }
+
+  onDictionaryChange(value: number) {
+    this.dictionaries.forEach(dictionary => {
+      if(dictionary.id == value) {
+        this.selectedDictionaryValues = dictionary.values;
+      }
+    });
   }
 
   onSubmit() {

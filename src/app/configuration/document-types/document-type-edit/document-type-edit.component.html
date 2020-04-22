@@ -26,14 +26,15 @@
          class="row"
          *ngFor="let fieldControl of getFieldsControls(); let i = index">
       <div [formGroupName]="i">
-        <input type="hidden" formControlName="id">
-        <div class="col-md-4">
+        <input type="hidden"
+               formControlName="id">
+        <div class="col-md-3">
           <input formControlName="name"
                  placeholder="Name"
                  type="text"
                  class="form-control">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
           <select formControlName="type"
                   class="form-control"
                   placeholder="Type">
@@ -41,11 +42,32 @@
                     [value]="fieldType">{{fieldType}}</option>
           </select>
         </div>
-        <div class="col-md-3">
-          <input formControlName="defaultValue"
-                 placeholder="Default value"
-                 type="text"
-                 class="form-control">
+        <div class="col-md-6">
+          <div [ngSwitch]="mainFormGroup.get('fields.' + i + '.type').value">
+            <div *ngSwitchCase="'dictionary'">
+              <div class="row">
+                <div class="col-md-6">
+                  <select class="form-control" (change)="onDictionaryChange($event.target.value)" formControlName="defaultValue">
+                    <option *ngFor="let dictionary of getDictionaries()" 
+                            [value]="dictionary.id">{{dictionary.name}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <select 
+                          class="form-control">
+                    <option *ngFor="let dictionaryValue of selectedDictionaryValues"
+                            [value]="dictionaryValue">{{dictionaryValue}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div *ngSwitchDefault>
+              <input formControlName="defaultValue"
+                     placeholder="Default value"
+                     type="text"
+                     class="form-control">
+            </div>
+          </div>
         </div>
         <div class="col-md-1">
           <button class="btn btn-danger"

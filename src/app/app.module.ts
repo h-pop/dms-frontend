@@ -24,6 +24,7 @@ import { DictionariesComponent } from './configuration/dictionaries/dictionaries
 import { DictionariesService } from './configuration/dictionaries/dictionaries.service';
 import { DictionaryEditComponent } from './configuration/dictionaries/dictionary-edit/dictionary-edit.component';
 import { IdGenerator } from './shared/id-generator.service';
+import { TypeDependantInputComponent } from './configuration/document-types/document-type-edit/type-dependant-input/type-dependant-input.component';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { IdGenerator } from './shared/id-generator.service';
         OrganizationStructureComponent,
         DocumentTypeEditComponent,
         DictionariesComponent,
-        DictionaryEditComponent
+        DictionaryEditComponent,
+        TypeDependantInputComponent
     ],
     imports: [
         BrowserModule,
