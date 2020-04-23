@@ -1,1 +1,40 @@
-<p>new-document works!</p>
+<form [formGroup]="mainFormGroup"
+      (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="documentType">Document type</label>
+        <select name="documentType"
+                formControlName="documentType"
+                class="form-control"
+                (change)="onDocumentTypeChange()">
+          <option *ngFor="let documentType of documentTypes"
+                  [ngValue]="documentType">{{documentType.name}}</option>
+        </select>
+      </div>
+      <div formArrayName="fields">
+        <div class="form-group"
+             *ngFor="let fieldControl of getFieldsControls(); let i = index">
+          <label for="fieldValue">{{documentType.fields[i].name}}</label>
+          <input id="fieldValue"
+                 name="fieldValue"
+                 [formControlName]="i"
+                 type="text"
+                 class="form-control">
+        </div>
+      </div>
+      <div *ngIf="documentType != null"
+           class="form-group">
+        <button class="btn btn-success"
+                type="submit"
+                [disabled]="!mainFormGroup.valid"
+                style="margin-right: 10px;">Save changes</button>
+        <button class="btn btn-primary"
+                type="button"
+                (click)="onClear()">Clear</button>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <h3>Here goes document</h3>
+    </div>
+  </div>

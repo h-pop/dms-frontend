@@ -25,10 +25,6 @@ export class DictionariesService {
     return this.dictionaries.slice();
   }
 
-  // getDictionaryByValueId(dictionaryValueId): Dictionary {
-
-  // }
-
   getDictionary(dictionaryId: any): Dictionary {
     return this.dictionaries.find((value) => value.id === dictionaryId);
   }

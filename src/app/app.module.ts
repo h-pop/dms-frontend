@@ -23,8 +23,8 @@ import { DocumentTypesService } from './configuration/document-types/document-ty
 import { DictionariesComponent } from './configuration/dictionaries/dictionaries.component';
 import { DictionariesService } from './configuration/dictionaries/dictionaries.service';
 import { DictionaryEditComponent } from './configuration/dictionaries/dictionary-edit/dictionary-edit.component';
+import { FieldEditComponent } from './configuration/document-types/document-type-edit/field-edit/field-edit.component';
 import { IdGenerator } from './shared/id-generator.service';
-import { TypeDependantInputComponent } from './configuration/document-types/document-type-edit/type-dependant-input/type-dependant-input.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +44,7 @@ import { TypeDependantInputComponent } from './configuration/document-types/docu
         DocumentTypeEditComponent,
         DictionariesComponent,
         DictionaryEditComponent,
-        TypeDependantInputComponent
+        FieldEditComponent
     ],
     imports: [
         BrowserModule,

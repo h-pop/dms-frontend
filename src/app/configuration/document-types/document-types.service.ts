@@ -7,9 +7,9 @@ export class DocumentTypesService {
   documentTypesChanged = new EventEmitter<DocumentType[]>();
   documentTypes: DocumentType[] = [
     new DocumentType(1, 'VAT Invoice', [
-      new Field('Description', 'textarea', 'Default description', 1),
+      new Field('Description', 'textarea', 'Default description', 1, '', true),
       new Field('Company 1', 'text', 'Some company', 2),
-      new Field('Status', 'dictionary', '', 3),
+      new Field('Status', 'dictionary', '2', 3, '1', true),
       new Field('Net value', 'number', '', 4),
       new Field('Accepting user', 'user', '', 9)
     ]),

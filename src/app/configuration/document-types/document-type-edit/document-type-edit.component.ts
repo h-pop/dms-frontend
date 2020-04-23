@@ -4,8 +4,6 @@ import { DocumentTypesService } from '../document-types.service';
 import { DocumentType, Field } from '../document-type.model';
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
 import { IdGenerator } from 'src/app/shared/id-generator.service';
-import { DictionariesService } from '../../dictionaries/dictionaries.service';
-import { Dictionary, DictionaryValue } from '../../dictionaries/dictionary.model';
 
 @Component({
   selector: 'app-document-type-edit',
@@ -14,35 +12,29 @@ import { Dictionary, DictionaryValue } from '../../dictionaries/dictionary.model
 })
 export class DocumentTypeEditComponent implements OnInit {
 
-
   mainFormGroup: FormGroup;
-  // FIXME problem with two or more dictionary type fields 
-  selectedDictionaryValues: DictionaryValue[];
+  fields: Field[] = [];
 
   private documentType: DocumentType;
-  private dictionaries: Dictionary[];
-  private fieldTypes: string[];
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private documentTypeService: DocumentTypesService,
-    private idGenerator: IdGenerator,
-    private dictionariesService: DictionariesService) { }
+    private idGenerator: IdGenerator) { }
 
 
   ngOnInit(): void {
-    this.fieldTypes = this.documentTypeService.getFieldTypes();
-    this.dictionaries = this.dictionariesService.getDictionaries();
-    this.fetchDocumentTypes();
+    this.fetchDocumentType();
     this.initializeMainFormGroup();
   }
 
-  private fetchDocumentTypes() {
+  private fetchDocumentType() {
     const documentTypeId = +this.route.snapshot.params.id;
     this.documentType = this.documentTypeService.getDocumentType(documentTypeId);
     if (this.documentType == null) {
       this.documentType = new DocumentType();
     }
+    console.log(this.documentType);
   }
 
   private initializeMainFormGroup() {
@@ -60,59 +52,29 @@ export class DocumentTypeEditComponent implements OnInit {
   }
 
   onAddField(field?: Field) {
-    const control = new FormGroup({
-      id: new FormControl(field && field.id),
-      name: new FormControl(field && field.name, Validators.required),
-      type: new FormControl(field && field.type || this.fieldTypes[0], Validators.required),
-      defaultValue: new FormControl(field && field.defaultValue),
-      defaultValueParent: new FormControl(field && field.defaultValueParent)
-    });
-    if (field && field.defaultValueParent) {
-      this.onDictionaryChange(field.defaultValueParent);
-    }
-    this.getFieldsFormArray().push(control);
+    this.fields.push(field);
+    this.getFieldsFormArray().push(new FormGroup({}));
   }
 
-  onTypeChange(fieldIndex: number) {
-    const fieldControl = this.getFieldsControls()[fieldIndex];
-    fieldControl.patchValue({
-      defaultValue: null,
-      defaultValueParent: null
-    });
-    this.selectedDictionaryValues = [];
+  onDeleteField(index: number) {
+    this.fields.splice(index, 1);
+    this.getFieldsFormArray().removeAt(index);
   }
 
   getFieldsControls() {
     return this.getFieldsFormArray().controls;
   }
 
-  // TODO get users from service
-  getUsers(): string[] {
-    return ['User 1', 'User 2'];
-  }
-
-  onDeleteField(index: number) {
-    this.getFieldsFormArray().removeAt(index);
-  }
-
-  onDictionaryChange(value: string) {
-    let found = false;
-    const valueAsNumber = +value;
-    this.dictionaries.forEach(dictionary => {
-      if (dictionary.id === valueAsNumber) {
-        this.selectedDictionaryValues = dictionary.dictionaryValues;
-        found = true;
-      }
-    });
-    if (!found) {
-      this.selectedDictionaryValues = [];
-    }
-  }
-
   onSubmit() {
     console.log(this.mainFormGroup);
     this.documentType.name = this.mainFormGroup.value.documentTypeName;
-    // delete
+    this.processFieldsDeletions();
+    this.processFieldsUpdates();
+    this.documentTypeService.updateDocumentType(this.documentType);
+    this.router.navigate(['..'], { relativeTo: this.route });
+  }
+
+  private processFieldsDeletions() {
     for (let index = 0; index < this.documentType.fields.length; index++) {
       const element = this.documentType.fields[index];
       const existingField = this.mainFormGroup.value.fields.find((value: Field) => value.id === element.id);
@@ -120,7 +82,9 @@ export class DocumentTypeEditComponent implements OnInit {
         this.documentType.fields.splice(index, 1);
       }
     }
-    // create/update
+  }
+
+  private processFieldsUpdates() {
     for (const field of this.mainFormGroup.value.fields) {
       if (field.id == null) {
         this.documentType.fields.push(new Field(field.name, field.type, field.defaultValue, this.idGenerator.next()));
@@ -132,9 +96,8 @@ export class DocumentTypeEditComponent implements OnInit {
         existingField.type = field.type;
         existingField.defaultValue = field.defaultValue;
         existingField.defaultValueParent = field.defaultValueParent;
+        existingField.required = field.required;
       }
     }
-    this.documentTypeService.updateDocumentType(this.documentType);
-    this.router.navigate(['..'], { relativeTo: this.route });
   }
 }
