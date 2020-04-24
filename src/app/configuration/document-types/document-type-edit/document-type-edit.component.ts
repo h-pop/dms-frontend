@@ -87,7 +87,7 @@ export class DocumentTypeEditComponent implements OnInit {
   private processFieldsUpdates() {
     for (const field of this.mainFormGroup.value.fields) {
       if (field.id == null) {
-        this.documentType.fields.push(new Field(field.name, field.type, field.defaultValue, this.idGenerator.next()));
+        this.documentType.fields.push(new Field(field.name, field.type, field.defaultValue, this.idGenerator.next(), field.defaultValueParent));
         continue;
       }
       const existingField = this.documentType.fields.find((value: Field) => value.id === field.id);

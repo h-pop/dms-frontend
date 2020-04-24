@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
@@ -25,6 +26,7 @@ import { DictionariesService } from './configuration/dictionaries/dictionaries.s
 import { DictionaryEditComponent } from './configuration/dictionaries/dictionary-edit/dictionary-edit.component';
 import { FieldEditComponent } from './configuration/document-types/document-type-edit/field-edit/field-edit.component';
 import { IdGenerator } from './shared/id-generator.service';
+import { DpDatePickerModule } from 'ng2-date-picker';
 
 @NgModule({
     declarations: [
@@ -51,7 +53,9 @@ import { IdGenerator } from './shared/id-generator.service';
         AppRoutingModule,
         HttpClientModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        PdfViewerModule,
+        DpDatePickerModule
     ],
     providers: [LoginService, DocumentTypesService, DictionariesService, IdGenerator],
     bootstrap: [AppComponent]

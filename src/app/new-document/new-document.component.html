@@ -3,7 +3,8 @@
   <div class="row">
     <div class="col-md-3">
       <div class="form-group">
-        <label for="documentType">Document type</label>
+        <label for="documentType"
+               class="dms-label">Document type</label>
         <select name="documentType"
                 formControlName="documentType"
                 class="form-control"
@@ -15,7 +16,8 @@
       <div formArrayName="fields">
         <div class="form-group"
              *ngFor="let fieldControl of getFieldsControls(); let i = index">
-          <label for="fieldValue">{{documentType.fields[i].name}}</label>
+          <label for="fieldValue"
+                 class="dms-label">{{documentType.fields[i].name}}</label>
           <input id="fieldValue"
                  name="fieldValue"
                  [formControlName]="i"
@@ -35,6 +37,31 @@
       </div>
     </div>
     <div class="col-md-9">
-      <h3>Here goes document</h3>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="file-upload"
+                   class="form-control dms-label custom-file-upload">
+              <i class="glyphicon glyphicon-upload"></i> Upload document file...
+            </label>
+            <input id="file-upload"
+                   type="file"
+                   (change)="onFileChange($event)"
+                   formControlName="documentFileInput"
+                   accept=".pdf">
+          </div>
+        </div>
+        <div class="col-md-9">
+          <p *ngIf="uploadedDocument; else noDocumentUploadedSpan"
+             class="form-label bg-success">Document uploaded: {{uploadedDocumentMetadata.name}}</p>
+          <ng-template #noDocumentUploadedSpan>
+            <span class="help-block">Document file is required!</span>
+          </ng-template>
+        </div>
+      </div>
+      <pdf-viewer [src]="uploadedDocument"
+                  [render-text]="true"
+                  style="display: block; height: 800px;">
+      </pdf-viewer>
     </div>
   </div>

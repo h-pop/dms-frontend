@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DictionariesService } from 'src/app/configuration/dictionaries/dictionaries.service';
 import { DictionaryValue, Dictionary } from 'src/app/configuration/dictionaries/dictionary.model';
 import { DocumentTypesService } from '../../document-types.service';
@@ -34,8 +34,8 @@ export class FieldEditComponent implements OnInit {
 
   initForm() {
     this.fieldGroup.addControl('id', new FormControl(this.field?.id));
-    this.fieldGroup.addControl('name', new FormControl(this.field?.name));
-    this.fieldGroup.addControl('type', new FormControl(this.field?.type || this.fieldTypes[0]));
+    this.fieldGroup.addControl('name', new FormControl(this.field?.name, Validators.required));
+    this.fieldGroup.addControl('type', new FormControl(this.field?.type || this.fieldTypes[0], Validators.required));
     this.fieldGroup.addControl('required', new FormControl(this.field?.required));
     this.fieldGroup.addControl('defaultValue', new FormControl(this.field?.defaultValue));
     this.fieldGroup.addControl('defaultValueParent', new FormControl(this.field?.defaultValueParent));

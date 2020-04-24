@@ -79,7 +79,36 @@
             </select>
           </div>
         </div>
-        <!-- TODO date, daterange -->
+        <div *ngSwitchCase="'date'">
+          <div class="col-md-11">
+            <input type="text"
+                   theme="dp-material"
+                   class="form-control"
+                   style="display: inline;"
+                   formControlName="defaultValue"
+                   placeholder="Select date"
+                   [dpDayPicker]="{}" />
+          </div>
+        </div>
+        <div *ngSwitchCase="'daterange'">
+          <div class="col-md-11">
+            <div class="input-group">
+              <input type="text"
+                     class="form-control"
+                     theme="dp-material"
+                     formControlName="defaultValueParent"
+                     placeholder="Select date from"
+                     [dpDayPicker]="{}" />
+              <span class="input-group-addon">-</span>
+              <input type="text"
+                     class="form-control"
+                     theme="dp-material"
+                     formControlName="defaultValue"
+                     placeholder="Select date to"
+                     [dpDayPicker]="{}" />
+            </div>
+          </div>
+        </div>
         <div *ngSwitchDefault>
           <div class="col-md-11">
             <input formControlName="defaultValue"

@@ -14,6 +14,8 @@ export class NewDocumentComponent implements OnInit {
   mainFormGroup: FormGroup;
   documentTypes: DocumentType[];
   documentType: DocumentType;
+  uploadedDocument;
+  uploadedDocumentMetadata: { name: string, size: string };
 
   constructor(private documentTypesService: DocumentTypesService, private formBuilder: FormBuilder) { }
 
@@ -44,10 +46,24 @@ export class NewDocumentComponent implements OnInit {
     console.log(this.mainFormGroup);
   }
 
+  onFileChange(event) {
+    let file = event.target.files[0];
+    this.uploadedDocumentMetadata = {
+      name: file.name,
+      size: file.size
+    }
+    let reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.uploadedDocument = e.target.result;
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
   private initFormGroup() {
     this.mainFormGroup = this.formBuilder.group({
       documentType: this.formBuilder.control(null, Validators.required),
-      fields: this.formBuilder.array([])
+      fields: this.formBuilder.array([]),
+      documentFileInput: this.formBuilder.control(null, Validators.required)
     });
   }
 
