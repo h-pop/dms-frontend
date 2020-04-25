@@ -15,14 +15,10 @@
       </div>
       <div formArrayName="fields">
         <div class="form-group"
-             *ngFor="let fieldControl of getFieldsControls(); let i = index">
-          <label for="fieldValue"
-                 class="dms-label">{{documentType.fields[i].name}}</label>
-          <input id="fieldValue"
-                 name="fieldValue"
-                 [formControlName]="i"
-                 type="text"
-                 class="form-control">
+             *ngFor="let fieldControl of getFieldsControls(); let i = index"
+             [formGroupName]="i">
+          <app-document-field [documentFieldGroup]="mainFormGroup.get('fields.' + i)"
+                              [documentField]="documentType.fields[i]"></app-document-field>
         </div>
       </div>
       <div *ngIf="documentType != null"
@@ -42,8 +38,7 @@
           <div class="form-group">
             <label for="file-upload"
                    class="form-control dms-label custom-file-upload">
-              <i class="glyphicon glyphicon-upload"></i> Upload document file...
-            </label>
+              <i class="glyphicon glyphicon-upload"></i> Upload document file... </label>
             <input id="file-upload"
                    type="file"
                    (change)="onFileChange($event)"

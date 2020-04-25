@@ -24,9 +24,10 @@ import { DocumentTypesService } from './configuration/document-types/document-ty
 import { DictionariesComponent } from './configuration/dictionaries/dictionaries.component';
 import { DictionariesService } from './configuration/dictionaries/dictionaries.service';
 import { DictionaryEditComponent } from './configuration/dictionaries/dictionary-edit/dictionary-edit.component';
-import { FieldEditComponent } from './configuration/document-types/document-type-edit/field-edit/field-edit.component';
+import { DocumentFieldEditComponent } from './configuration/document-types/document-type-edit/document-field-edit/document-field-edit.component';
 import { IdGenerator } from './shared/id-generator.service';
 import { DpDatePickerModule } from 'ng2-date-picker';
+import { DocumentFieldComponent } from './new-document/document-field/document-field.component';
 
 @NgModule({
     declarations: [
@@ -46,7 +47,8 @@ import { DpDatePickerModule } from 'ng2-date-picker';
         DocumentTypeEditComponent,
         DictionariesComponent,
         DictionaryEditComponent,
-        FieldEditComponent
+        DocumentFieldEditComponent,
+        DocumentFieldComponent
     ],
     imports: [
         BrowserModule,

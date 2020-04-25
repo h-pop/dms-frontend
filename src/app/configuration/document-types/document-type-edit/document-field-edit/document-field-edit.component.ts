@@ -6,11 +6,11 @@ import { DocumentTypesService } from '../../document-types.service';
 import { Field } from '../../document-type.model';
 
 @Component({
-  selector: 'app-field-edit',
-  templateUrl: './field-edit.component.html',
-  styleUrls: ['./field-edit.component.css']
+  selector: 'app-document-field-edit',
+  templateUrl: './document-field-edit.component.html',
+  styleUrls: ['./document-field-edit.component.css']
 })
-export class FieldEditComponent implements OnInit {
+export class DocumentFieldEditComponent implements OnInit {
 
   @Input() fieldGroup: FormGroup;
   @Input() field: Field;

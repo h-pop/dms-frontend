@@ -26,9 +26,9 @@
       <div class="row"
            *ngFor="let fieldControl of getFieldsControls(); let i = index"
            [formGroupName]="i">
-        <app-field-edit [fieldGroup]="mainFormGroup.get('fields.' + i)"
+        <app-document-field-edit [fieldGroup]="mainFormGroup.get('fields.' + i)"
                         [field]="fields[i]"
-                        (deleteField)="onDeleteField(i)"></app-field-edit>
+                        (deleteField)="onDeleteField(i)"></app-document-field-edit>
       </div>
     </div>
   </div>

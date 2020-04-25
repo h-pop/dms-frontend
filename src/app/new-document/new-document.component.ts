@@ -28,9 +28,7 @@ export class NewDocumentComponent implements OnInit {
     this.getFieldsFormArray().clear();
     this.documentType = this.getSelectedDocumentType();
     this.documentType.fields.forEach(element => {
-      const validators = element.required ? [Validators.required] : [];
-      const control = this.formBuilder.control(element.defaultValue, validators);
-      this.getFieldsFormArray().push(control);
+      this.getFieldsFormArray().push(this.formBuilder.group({}));
     });
   }
 
