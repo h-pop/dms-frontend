@@ -30,8 +30,7 @@
             <input id="requiredInput"
                    type="checkbox"
                    autocomplete="off"
-                   formControlName="required"> Required
-          </span>
+                   formControlName="required"> Required </span>
         </div>
       </div>
       <div class="col-md-1">
@@ -47,14 +46,15 @@
             <select class="form-control"
                     (change)="onDictionaryChange($event.target.value)"
                     formControlName="defaultValueParent">
-              <option [value]="null">Select dictionary</option>
-              <option *ngFor="let dictionary of getDictionaries()"
+              <option [value]="null">-- Select dictionary --</option>
+              <option *ngFor="let dictionary of dictionaries"
                       [value]="dictionary.id">{{dictionary.name}}</option>
             </select>
           </div>
           <div class="col-md-5">
             <select class="form-control"
                     formControlName="defaultValue">
+              <option [value]="null">-- Select dictionary value --</option>
               <option *ngFor="let dictionaryValue of selectedDictionaryValues"
                       [value]="dictionaryValue.id">{{dictionaryValue.name}}</option>
             </select>
@@ -73,7 +73,8 @@
           <div class="col-md-11">
             <select class="form-control"
                     formControlName="defaultValue">
-              <option *ngFor="let user of getUsers()"
+              <option [value]="null">-- Select user --</option>
+              <option *ngFor="let user of users"
                       [value]="user">{{user}}</option>
             </select>
           </div>
@@ -91,21 +92,14 @@
         </div>
         <div *ngSwitchCase="'daterange'">
           <div class="col-md-11">
-            <div class="input-group">
-              <input type="text"
-                     class="form-control"
-                     theme="dp-material"
-                     formControlName="defaultValueParent"
-                     placeholder="Select date from"
-                     [dpDayPicker]="{}" />
-              <span class="input-group-addon">-</span>
-              <input type="text"
-                     class="form-control"
-                     theme="dp-material"
-                     formControlName="defaultValue"
-                     placeholder="Select date to"
-                     [dpDayPicker]="{}" />
-            </div>
+            <input type="text"
+                   class="form-control"
+                   theme="dp-material"
+                   style="display: inline;"
+                   formControlName="defaultValue"
+                   placeholder="Select dates from-to"
+                   [dpDayPicker]="{allowMultiSelect: true}" 
+                   (onChange)="onDateRangeChange($event)" />
           </div>
         </div>
         <div *ngSwitchDefault>
@@ -116,6 +110,13 @@
                    class="form-control">
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <span *ngIf="!fieldGroup.valid && fieldGroup.touched"
+              class="help-block"
+              style='color: #d9534f'>This document field is invalid!</span>
       </div>
     </div>
   </div>

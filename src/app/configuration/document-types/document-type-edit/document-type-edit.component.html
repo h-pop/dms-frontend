@@ -27,11 +27,12 @@
            *ngFor="let fieldControl of getFieldsControls(); let i = index"
            [formGroupName]="i">
         <app-document-field-edit [fieldGroup]="mainFormGroup.get('fields.' + i)"
-                        [field]="fields[i]"
-                        (deleteField)="onDeleteField(i)"></app-document-field-edit>
+                                 [field]="fields[i]"
+                                 (deleteField)="onDeleteField(i)"></app-document-field-edit>
       </div>
     </div>
   </div>
   <span *ngIf="!mainFormGroup.valid && mainFormGroup.touched"
-        class="help-block">Please enter a valid data!</span>
+        class="help-block"
+        style='color: #d9534f'>Please enter a valid data!</span>
 </form>

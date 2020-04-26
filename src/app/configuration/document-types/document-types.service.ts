@@ -10,10 +10,10 @@ export class DocumentTypesService {
       new Field('Description', 'textarea', 'Default description', 1, null, true),
       new Field('Company 1', 'text', 'Some company', 2),
       new Field('Status', 'dictionary', '2', 3, '1', true),
-      new Field('Net value', 'number', '', 4),
-      new Field('Accepting user', 'user', '', 9),
-      new Field('Some daterange', 'daterange', '', 11),
-      new Field('Some date', 'date', '', 12)
+      new Field('Net value', 'number', null, 4),
+      new Field('Accepting user', 'user', null, 9),
+      new Field('Some daterange', 'daterange', null, 11),
+      new Field('Some date', 'date', null, 12)
     ]),
     new DocumentType(2, 'Leave request', [
       new Field('From', 'date', '', 5),

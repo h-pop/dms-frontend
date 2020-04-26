@@ -4,6 +4,8 @@ import { DictionariesService } from 'src/app/configuration/dictionaries/dictiona
 import { DictionaryValue, Dictionary } from 'src/app/configuration/dictionaries/dictionary.model';
 import { DocumentTypesService } from '../../document-types.service';
 import { Field } from '../../document-type.model';
+import * as moment from 'moment';
+import { AppSettings } from 'src/app/shared/app.settings';
 
 @Component({
   selector: 'app-document-field-edit',
@@ -18,14 +20,17 @@ export class DocumentFieldEditComponent implements OnInit {
   @Output() deleteField = new EventEmitter<void>();
 
   selectedDictionaryValues: DictionaryValue[];
+  dictionaries: Dictionary[];
+  // TODO get users from service
+  users = ['User 1', 'User 2'];
 
   private fieldTypes: string[];
-  private dictionaries: Dictionary[];
 
   constructor(private dictionariesService: DictionariesService, private documentTypesService: DocumentTypesService) { }
 
   ngOnInit(): void {
     this.fieldTypes = this.documentTypesService.getFieldTypes();
+    this.dictionaries = this.dictionariesService.getDictionaries();
     this.initForm();
     if (this.field?.defaultValueParent) {
       this.onDictionaryChange(this.field.defaultValueParent);
@@ -39,7 +44,6 @@ export class DocumentFieldEditComponent implements OnInit {
     this.fieldGroup.addControl('required', new FormControl(this.field?.required));
     this.fieldGroup.addControl('defaultValue', new FormControl(this.field?.defaultValue));
     this.fieldGroup.addControl('defaultValueParent', new FormControl(this.field?.defaultValueParent));
-    console.log(this.fieldGroup);
   }
 
   onTypeChange() {
@@ -52,22 +56,19 @@ export class DocumentFieldEditComponent implements OnInit {
 
   onDictionaryChange(value: string) {
     const dictionary = this.dictionariesService.getDictionary(+value);
-    this.selectedDictionaryValues = dictionary && dictionary.dictionaryValues || [];
+    this.selectedDictionaryValues = dictionary?.dictionaryValues || [];
   }
 
   onDeleteField() {
     this.deleteField.emit();
   }
 
-  // TODO get users from service
-  getUsers(): string[] {
-    return ['User 1', 'User 2'];
+  onDateRangeChange(dates: moment.Moment[]) {
+    if (dates.length > 2) {
+      this.fieldGroup.patchValue({
+        defaultValue: dates[2].format(AppSettings.DATE_FORMAT)
+      });
+    }
   }
 
-  getDictionaries() {
-    if (!this.dictionaries) {
-      this.dictionaries = this.dictionariesService.getDictionaries();
-    }
-    return this.dictionaries;
-  }
 }
