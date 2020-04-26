@@ -42,6 +42,7 @@ export class NewDocumentComponent implements OnInit {
 
   onSubmit() {
     console.log(this.mainFormGroup);
+    console.log(this.mainFormGroup.value);
   }
 
   onFileChange(event) {

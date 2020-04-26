@@ -15,9 +15,20 @@
           <div *ngSwitchCase="'user'">
             <select class="form-control"
                     formControlName="fieldValue">
-              <option *ngFor="let user of getUsers()"
+              <option *ngFor="let user of users"
                       [value]="user">{{user}}</option>
             </select>
+          </div>
+          <div *ngSwitchCase="'daterange'">
+            <input type="text"
+                   id="fieldValue"
+                   class="form-control"
+                   style="display: inline;"
+                   theme="dp-material"
+                   formControlName="fieldValue"
+                   placeholder="Select date from-to"
+                   [dpDayPicker]="{allowMultiSelect: true}"
+                   (onChange)="onCustomDateChange($event)" />
           </div>
           <div *ngSwitchCase="'date'">
             <input type="text"
@@ -28,32 +39,13 @@
                    placeholder="Select date"
                    [dpDayPicker]="{}" />
           </div>
-          <div *ngSwitchCase="'daterange'">
-            <div class="input-group">
-              <input type="text"
-                     id="fieldValue"
-                     class="form-control"
-                     theme="dp-material"
-                     formControlName="fieldValueParent"
-                     placeholder="Select date from"
-                     [dpDayPicker]="{}" />
-              <span class="input-group-addon">-</span>
-              <input type="text"
-                     class="form-control"
-                     id="fieldValue"
-                     theme="dp-material"
-                     formControlName="fieldValue"
-                     placeholder="Select date to"
-                     [dpDayPicker]="{}" />
-            </div>
-          </div>
           <div *ngSwitchCase="'textarea'">
             <textarea formControlName="fieldValue"
                       name="fieldValue"
                       id="fieldValue"
                       type="text"
                       rows="4"
-                      class="form-control"></textarea>
+                      class="form-control"> </textarea>
           </div>
           <div *ngSwitchDefault>
             <input id="fieldValue"
