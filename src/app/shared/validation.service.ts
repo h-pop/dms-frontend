@@ -47,7 +47,6 @@ export class ValidationService {
   daterangeValidator(control: FormControl): { [s: string]: boolean } {
     if (control.value) {
       const dates = control.value.split('|');
-      console.log('dates: ' + dates);
       if (dates.length !== 2) {
         return { 'twoDatesNeeded': true }
       }

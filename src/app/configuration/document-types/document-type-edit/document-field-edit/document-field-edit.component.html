@@ -45,7 +45,7 @@
           <div class="col-md-6">
             <select class="form-control"
                     (change)="onDictionaryChange($event.target.value)"
-                    formControlName="defaultValueParent">
+                    formControlName="defaultValueParent"> 
               <option [value]="null">-- Select dictionary --</option>
               <option *ngFor="let dictionary of dictionaries"
                       [value]="dictionary.id">{{dictionary.name}}</option>

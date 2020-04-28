@@ -22,11 +22,13 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
   @Output() deleteField = new EventEmitter<void>();
 
   selectedDictionaryValues: DictionaryValue[];
+
+  // TODO dictionary must be defined for field
   dictionaries: Dictionary[];
   // TODO get users from service
   users = ['User 1', 'User 2'];
 
-  private readonly fieldTypes = Object.values(FieldTypeEnum);
+  readonly fieldTypes = Object.values(FieldTypeEnum);
 
   constructor(private dictionariesService: DictionariesService,
     private validationService: ValidationService) { }
@@ -53,8 +55,9 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
     this.fieldGroup.addControl('name', new FormControl(this.field?.name, Validators.required));
     this.fieldGroup.addControl('type', new FormControl(this.field?.type || this.fieldTypes[0], Validators.required));
     this.fieldGroup.addControl('required', new FormControl(this.field?.required));
-    this.fieldGroup.addControl('defaultValue', new FormControl(this.field?.defaultValue));
+    // TODO dictionaryId instead of defaultValueParent
     this.fieldGroup.addControl('defaultValueParent', new FormControl(this.field?.defaultValueParent));
+    this.fieldGroup.addControl('defaultValue', new FormControl(this.field?.defaultValue));
   }
 
   onTypeChange() {

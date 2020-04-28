@@ -28,7 +28,7 @@
                    formControlName="fieldValue"
                    placeholder="Select date from-to"
                    [dpDayPicker]="{allowMultiSelect: true}"
-                   (onChange)="onCustomDateChange($event)" />
+                   (onChange)="onDateRangeChange($event)" />
           </div>
           <div *ngSwitchCase="'date'">
             <input type="text"
