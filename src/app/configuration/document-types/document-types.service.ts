@@ -23,7 +23,6 @@ export class DocumentTypesService {
       new Field('Net value', 'text', '', 10)
     ]),
   ];
-  fieldTypes = ['text', 'textarea', 'number', 'dictionary', 'date', 'daterange', 'user'];
 
   constructor(private idGenerator: IdGenerator) { }
 
@@ -38,10 +37,6 @@ export class DocumentTypesService {
 
   getDocumentType(documentTypeId: number): DocumentType {
     return this.documentTypes.find((value) => value.id === documentTypeId);
-  }
-
-  getFieldTypes(): string[] {
-    return this.fieldTypes;
   }
 
   updateDocumentType(documentType: DocumentType) {

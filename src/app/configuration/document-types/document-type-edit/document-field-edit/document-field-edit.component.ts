@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DictionariesService } from 'src/app/configuration/dictionaries/dictionaries.service';
 import { DictionaryValue, Dictionary } from 'src/app/configuration/dictionaries/dictionary.model';
@@ -6,13 +6,15 @@ import { DocumentTypesService } from '../../document-types.service';
 import { Field } from '../../document-type.model';
 import * as moment from 'moment';
 import { AppSettings } from 'src/app/shared/app.settings';
+import { ValidationService } from 'src/app/shared/validation.service';
+import { FieldTypeEnum } from 'src/app/shared/field-type.enum';
 
 @Component({
   selector: 'app-document-field-edit',
   templateUrl: './document-field-edit.component.html',
   styleUrls: ['./document-field-edit.component.css']
 })
-export class DocumentFieldEditComponent implements OnInit {
+export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
 
   @Input() fieldGroup: FormGroup;
   @Input() field: Field;
@@ -24,17 +26,26 @@ export class DocumentFieldEditComponent implements OnInit {
   // TODO get users from service
   users = ['User 1', 'User 2'];
 
-  private fieldTypes: string[];
+  private readonly fieldTypes = Object.values(FieldTypeEnum);
 
-  constructor(private dictionariesService: DictionariesService, private documentTypesService: DocumentTypesService) { }
+  constructor(private dictionariesService: DictionariesService,
+    private validationService: ValidationService) { }
 
   ngOnInit(): void {
-    this.fieldTypes = this.documentTypesService.getFieldTypes();
     this.dictionaries = this.dictionariesService.getDictionaries();
     this.initForm();
-    if (this.field?.defaultValueParent) {
-      this.onDictionaryChange(this.field.defaultValueParent);
-    }
+    this.onDictionaryChange(this.field?.defaultValueParent);
+  }
+
+  ngAfterViewInit(): void {
+    this.setValidators();
+  }
+
+  private setValidators() {
+    const fieldType = this.fieldGroup.get('type').value;
+    const defaultValueControl = this.fieldGroup.get('defaultValue');
+    defaultValueControl.clearValidators();
+    defaultValueControl.setValidators(this.validationService.getValidator(fieldType as FieldTypeEnum));
   }
 
   initForm() {
@@ -52,6 +63,7 @@ export class DocumentFieldEditComponent implements OnInit {
       defaultValueParent: null
     });
     this.selectedDictionaryValues = [];
+    this.setValidators();
   }
 
   onDictionaryChange(value: string) {

@@ -28,6 +28,7 @@ import { DocumentFieldEditComponent } from './configuration/document-types/docum
 import { IdGenerator } from './shared/id-generator.service';
 import { DpDatePickerModule } from 'ng2-date-picker';
 import { DocumentFieldComponent } from './new-document/document-field/document-field.component';
+import { ValidationService } from './shared/validation.service';
 
 @NgModule({
     declarations: [
@@ -59,7 +60,7 @@ import { DocumentFieldComponent } from './new-document/document-field/document-f
         PdfViewerModule,
         DpDatePickerModule
     ],
-    providers: [LoginService, DocumentTypesService, DictionariesService, IdGenerator],
+    providers: [LoginService, DocumentTypesService, DictionariesService, IdGenerator, ValidationService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
