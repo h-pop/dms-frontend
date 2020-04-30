@@ -9,7 +9,7 @@ export class DocumentTypesService {
     new DocumentType(1, 'VAT Invoice', [
       new Field('Description', 'textarea', 'Default description', 1, null, true),
       new Field('Company 1', 'text', 'Some company', 2),
-      new Field('Status', 'dictionary', '2', 3, '1', true),
+      new Field('Status', 'dictionary', '2', 3, 1, true),
       new Field('Net value', 'number', null, 4),
       new Field('Accepting user', 'user', null, 9),
       new Field('Some daterange', 'daterange', null, 11),

@@ -17,14 +17,14 @@ export class Field {
   name: string;
   type: string;
   required: boolean;
-  defaultValueParent: string;
+  dictionaryId: number;
   defaultValue: string;
 
-  constructor(name?: string, type?: string, defaultValue?: string, id?: number, defaultValueParent?: string, required?: boolean) {
+  constructor(name?: string, type?: string, defaultValue?: string, id?: number, dictionaryId?: number, required?: boolean) {
     this.name = name;
     this.type = type;
     this.defaultValue = defaultValue;
-    this.defaultValueParent = defaultValueParent;
+    this.dictionaryId = dictionaryId;
     this.id = id;
     this.required = required || false;
   }

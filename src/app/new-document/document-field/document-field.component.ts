@@ -28,8 +28,8 @@ export class DocumentFieldComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeDocumentFieldGroup();
-    if (this.documentField?.type === FieldTypeEnum.DICTIONARY && this.documentField?.defaultValueParent) {
-      this.selectedDictionaryValues = this.dictionariesService.getDictionary(+this.documentField.defaultValueParent).dictionaryValues;
+    if (this.documentField?.type === FieldTypeEnum.DICTIONARY && this.documentField?.dictionaryId) {
+      this.selectedDictionaryValues = this.dictionariesService.getDictionary(+this.documentField.dictionaryId).dictionaryValues;
     }
   }
 

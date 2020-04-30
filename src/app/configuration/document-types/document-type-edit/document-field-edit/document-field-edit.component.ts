@@ -2,7 +2,6 @@ import { Component, OnInit, Input, EventEmitter, Output, AfterViewInit } from '@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DictionariesService } from 'src/app/configuration/dictionaries/dictionaries.service';
 import { DictionaryValue, Dictionary } from 'src/app/configuration/dictionaries/dictionary.model';
-import { DocumentTypesService } from '../../document-types.service';
 import { Field } from '../../document-type.model';
 import * as moment from 'moment';
 import { AppSettings } from 'src/app/shared/app.settings';
@@ -22,9 +21,8 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
   @Output() deleteField = new EventEmitter<void>();
 
   selectedDictionaryValues: DictionaryValue[];
-
-  // TODO dictionary must be defined for field
   dictionaries: Dictionary[];
+
   // TODO get users from service
   users = ['User 1', 'User 2'];
 
@@ -36,7 +34,7 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.dictionaries = this.dictionariesService.getDictionaries();
     this.initForm();
-    this.onDictionaryChange(this.field?.defaultValueParent);
+    this.onDictionaryChange(this.field?.dictionaryId);
   }
 
   ngAfterViewInit(): void {
@@ -46,8 +44,17 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
   private setValidators() {
     const fieldType = this.fieldGroup.get('type').value;
     const defaultValueControl = this.fieldGroup.get('defaultValue');
+
     defaultValueControl.clearValidators();
     defaultValueControl.setValidators(this.validationService.getValidator(fieldType as FieldTypeEnum));
+    defaultValueControl.updateValueAndValidity();
+
+    const dictionaryIdValidators = this.isDictionary() ? Validators.required : [];
+    const dictionaryIdControl = this.fieldGroup.get('dictionaryId');
+
+    dictionaryIdControl.clearValidators();
+    dictionaryIdControl.setValidators(dictionaryIdValidators);
+    dictionaryIdControl.updateValueAndValidity();
   }
 
   initForm() {
@@ -55,21 +62,25 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
     this.fieldGroup.addControl('name', new FormControl(this.field?.name, Validators.required));
     this.fieldGroup.addControl('type', new FormControl(this.field?.type || this.fieldTypes[0], Validators.required));
     this.fieldGroup.addControl('required', new FormControl(this.field?.required));
-    // TODO dictionaryId instead of defaultValueParent
-    this.fieldGroup.addControl('defaultValueParent', new FormControl(this.field?.defaultValueParent));
+    this.fieldGroup.addControl('dictionaryId', new FormControl(this.field?.dictionaryId));
     this.fieldGroup.addControl('defaultValue', new FormControl(this.field?.defaultValue));
   }
 
   onTypeChange() {
     this.fieldGroup.patchValue({
       defaultValue: null,
-      defaultValueParent: null
+      dictionaryId: this.isDictionary() ? this.dictionaries[0].id : null
     });
     this.selectedDictionaryValues = [];
     this.setValidators();
   }
 
-  onDictionaryChange(value: string) {
+  private isDictionary() {
+    const fieldType = this.fieldGroup.get('type').value;
+    return fieldType === FieldTypeEnum.DICTIONARY;
+  }
+
+  onDictionaryChange(value: number) {
     const dictionary = this.dictionariesService.getDictionary(+value);
     this.selectedDictionaryValues = dictionary?.dictionaryValues || [];
   }
