@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { AppSettings } from 'src/app/shared/app.settings';
 import { ValidationService } from 'src/app/shared/validation.service';
 import { FieldTypeEnum } from 'src/app/shared/field-type.enum';
+import { UserService } from 'src/app/shared/user.service';
 
 @Component({
   selector: 'app-document-field-edit',
@@ -22,17 +23,17 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
 
   selectedDictionaryValues: DictionaryValue[];
   dictionaries: Dictionary[];
-
-  // TODO get users from service
-  users = ['User 1', 'User 2'];
+  users: string[];
 
   readonly fieldTypes = Object.values(FieldTypeEnum);
 
   constructor(private dictionariesService: DictionariesService,
-    private validationService: ValidationService) { }
+    private validationService: ValidationService,
+    private userService: UserService) { }
 
   ngOnInit(): void {
     this.dictionaries = this.dictionariesService.getDictionaries();
+    this.users = this.userService.getUsers();
     this.initForm();
     this.onDictionaryChange(this.field?.dictionaryId);
   }

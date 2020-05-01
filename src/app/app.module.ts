@@ -29,38 +29,39 @@ import { IdGenerator } from './shared/id-generator.service';
 import { DpDatePickerModule } from 'ng2-date-picker';
 import { DocumentFieldComponent } from './new-document/document-field/document-field.component';
 import { ValidationService } from './shared/validation.service';
+import { UserService } from './shared/user.service';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        LoginComponent,
-        OauthComponent,
-        PageNotFoundComponent,
-        HomeComponent,
-        HeaderComponent,
-        NewDocumentComponent,
-        DocumentRepositoryComponent,
-        ConfigurationComponent,
-        DropdownDirective,
-        ConfigurationListComponent,
-        DocumentTypesComponent,
-        OrganizationStructureComponent,
-        DocumentTypeEditComponent,
-        DictionariesComponent,
-        DictionaryEditComponent,
-        DocumentFieldEditComponent,
-        DocumentFieldComponent
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        PdfViewerModule,
-        DpDatePickerModule
-    ],
-    providers: [LoginService, DocumentTypesService, DictionariesService, IdGenerator, ValidationService],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    OauthComponent,
+    PageNotFoundComponent,
+    HomeComponent,
+    HeaderComponent,
+    NewDocumentComponent,
+    DocumentRepositoryComponent,
+    ConfigurationComponent,
+    DropdownDirective,
+    ConfigurationListComponent,
+    DocumentTypesComponent,
+    OrganizationStructureComponent,
+    DocumentTypeEditComponent,
+    DictionariesComponent,
+    DictionaryEditComponent,
+    DocumentFieldEditComponent,
+    DocumentFieldComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PdfViewerModule,
+    DpDatePickerModule
+  ],
+  providers: [LoginService, DocumentTypesService, DictionariesService, IdGenerator, ValidationService, UserService],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

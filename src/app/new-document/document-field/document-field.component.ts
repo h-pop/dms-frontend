@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { AppSettings } from 'src/app/shared/app.settings';
 import { FieldTypeEnum } from 'src/app/shared/field-type.enum';
 import { ValidationService } from 'src/app/shared/validation.service';
+import { UserService } from 'src/app/shared/user.service';
 
 @Component({
   selector: 'app-document-field',
@@ -19,14 +20,15 @@ export class DocumentFieldComponent implements OnInit {
   @Input() documentField: Field;
 
   selectedDictionaryValues: DictionaryValue[];
-  // TODO get users from service
-  users = ['User 1', 'User 2'];
+  users: string[];
 
   constructor(private dictionariesService: DictionariesService,
     private formBuilder: FormBuilder,
-    private validationService: ValidationService) { }
+    private validationService: ValidationService,
+    private userService: UserService) { }
 
   ngOnInit(): void {
+    this.users = this.userService.getUsers();
     this.initializeDocumentFieldGroup();
     if (this.documentField?.type === FieldTypeEnum.DICTIONARY && this.documentField?.dictionaryId) {
       this.selectedDictionaryValues = this.dictionariesService.getDictionary(+this.documentField.dictionaryId).dictionaryValues;
