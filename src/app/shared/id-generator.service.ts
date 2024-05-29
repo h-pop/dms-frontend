@@ -1,5 +1,7 @@
+import { Injectable } from "@angular/core";
 
 // TODO temporary solution without backend aplication
+@Injectable()
 export class IdGenerator {
   count = 100;
 

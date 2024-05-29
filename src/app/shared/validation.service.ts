@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ValidatorFn, FormControl, Validators } from '@angular/forms';
 import { FieldTypeEnum } from './field-type.enum';
-import * as moment from 'moment';
+import moment from 'moment';
 import { AppSettings } from './app.settings';
 
 @Injectable()
