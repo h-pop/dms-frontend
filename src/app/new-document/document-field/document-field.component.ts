@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Field } from 'src/app/configuration/document-types/document-type.model';
 import { DictionariesService } from 'src/app/configuration/dictionaries/dictionaries.service';
 import { DictionaryValue } from 'src/app/configuration/dictionaries/dictionary.model';
-import * as moment from 'moment';
+import moment from 'moment';
 import { AppSettings } from 'src/app/shared/app.settings';
 import { FieldTypeEnum } from 'src/app/shared/field-type.enum';
 import { ValidationService } from 'src/app/shared/validation.service';

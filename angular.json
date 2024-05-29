@@ -42,12 +42,9 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -55,24 +52,29 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "dms-frontend:build"
-          },
           "configurations": {
             "production": {
-              "browserTarget": "dms-frontend:build:production"
+              "buildTarget": "dms-frontend:build:production"
+            },
+            "development": {
+              "buildTarget": "dms-frontend:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dms-frontend:build"
+            "buildTarget": "dms-frontend:build"
           }
         },
         "test": {
@@ -119,5 +121,4 @@
         }
       }
     }},
-  "defaultProject": "dms-frontend"
 }
