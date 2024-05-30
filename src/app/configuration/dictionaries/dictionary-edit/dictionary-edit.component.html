@@ -2,47 +2,42 @@
       (ngSubmit)="onSubmit()">
   <div style="margin-bottom: 10px;"
        class="row">
-    <div class="col-md-6">
-      <input placeholder="Dictionary name"
-             type="text"
-             class="form-control"
-             formControlName="dictionaryName">
-      <span *ngIf="!mainFormGroup.get('dictionaryName').valid && mainFormGroup.get('dictionaryName').touched"
-            class="help-block">This value is required!</span>
-    </div>
-    <div class="col-md-5">
-      <div class="pull-right">
-        <button class="btn btn-primary"
-                type="submit"
-                [disabled]="!mainFormGroup.valid">Save changes</button>
-      </div>
-    </div>
-    <div class="col-md-1">
-      <button class="btn btn-success"
-              type="button"
-              (click)="onAddDictionaryValue()">+</button>
-    </div>
+    <mat-form-field>
+      <input 
+      matInput 
+      placeholder="Dictionary name"
+      type="text"
+      class="form-control"
+      formControlName="dictionaryName">
+    </mat-form-field>
+    <span *ngIf="!mainFormGroup.get('dictionaryName').valid && mainFormGroup.get('dictionaryName').touched"
+          class="help-block">This value is required!</span>
+    <button mat-flat-button 
+            color="primary"
+            type="submit"
+            [disabled]="!mainFormGroup.valid">Save changes</button>
+    <button mat-flat-button 
+    color="primary"
+            type="button"
+            (click)="onAddDictionaryValue()">+</button>
   </div>
   <div formArrayName="dictionaryValues">
-    <div style="margin-bottom: 10px;"
-         class="row"
-         *ngFor="let dictionaryValueControl of getDictionaryValueControls(); let i = index">
+    <div *ngFor="let dictionaryValueControl of getDictionaryValueControls(); let i = index">
       <div [formGroupName]="i">
         <input type="hidden"
                formControlName="id">
-        <div class="col-md-11 col-sm-5">
-          <input [value]="value"
-                 placeholder="Dictionary value"
-                 type="text"
-                 class="form-control"
-                 formControlName="name">
-          <span *ngIf="isDictionaryValueMissing(i)"
-                class="help-block">This value is required!</span>
-        </div>
-        <div class="col-md-1">
-          <button class="btn btn-danger"
-                  (click)="onDeleteDictionaryValue(i)">X</button>
-        </div>
+        <mat-form-field>
+          <input 
+          matInput 
+          [value]="value"
+          placeholder="Dictionary value"
+          type="text"
+          class="form-control"
+          formControlName="name">
+        </mat-form-field>
+        <span *ngIf="isDictionaryValueMissing(i)"
+              class="help-block">This value is required!</span>
+        <button mat-flat-button color="warn" type="button" (click)="onDeleteDictionaryValue(i)">X</button>
       </div>
     </div>
     <span *ngIf="noDictionaryValues()"

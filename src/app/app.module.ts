@@ -34,6 +34,10 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +69,11 @@ import { MatButtonModule } from '@angular/material/button';
     DpDatePickerModule,
     MatToolbarModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [LoginService, DocumentTypesService, DictionariesService, IdGenerator, ValidationService, UserService, provideAnimationsAsync()],
   bootstrap: [AppComponent]

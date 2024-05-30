@@ -81,9 +81,13 @@
         <div *ngSwitchCase="'date'">
           <div class="col-md-11">
             <div class="input-group">
-              <input ngbDatepicker #d="ngbDatepicker" formControlName="defaultValue" class="form-control"/>
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
-            </div>
+              <input type="text"
+              class="form-control"
+              theme="dp-material"
+              style="display: inline;"
+              formControlName="defaultValue"
+              placeholder="Select date"
+              [dpDayPicker]="{}"/></div>
           </div>
         </div>
         <div *ngSwitchCase="'daterange'">
