@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DictionariesService } from '../dictionaries.service';
 import { Dictionary, DictionaryValue } from '../dictionary.model';
-import { NgForm, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-import { IdGenerator } from 'src/app/shared/id-generator.service';
+import { FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-dictionary-edit',
@@ -19,8 +18,7 @@ export class DictionaryEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private dictionariesService: DictionariesService,
-    private router: Router,
-    private idGenerator: IdGenerator
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -38,8 +36,9 @@ export class DictionaryEditComponent implements OnInit {
 
   private initializeMainFormGroup() {
     this.mainFormGroup = new FormGroup({
-      dictionaryName: new FormControl(this.dictionary.name, Validators.required),
-      dictionaryValues: new FormArray([], this.hasAtLeastOneValue)
+      id: new FormControl(this.dictionary.id),
+      name: new FormControl(this.dictionary.name, Validators.required),
+      dictionaryValues: new FormArray([], [this.hasAtLeastOneValue, this.hasUniqueName])
     });
     this.dictionary.dictionaryValues.forEach(element => {
       this.onAddDictionaryValue(element);
@@ -57,10 +56,23 @@ export class DictionaryEditComponent implements OnInit {
     return null;
   }
 
+  hasUniqueName(formArray: FormArray): { [s: string]: boolean } {
+    let result;
+    formArray.value.reduce((a, b) => {
+      if (a.indexOf(b.name) > -1) {
+        result = { 'duplicateDictionaryValues': true };
+      }
+      a.push(b.name);
+      return a;
+    }, [])
+    return result;
+  }
+
   onAddDictionaryValue(element?: DictionaryValue) {
     const control = new FormGroup({
-      id: new FormControl(element && element.id),
-      name: new FormControl(element && element.name, Validators.required)
+      id: new FormControl(element?.id),
+      dictionaryId: new FormControl(element?.dictionaryId || this.dictionary.id),
+      name: new FormControl(element?.name, Validators.required)
     });
     this.getDictionaryValuesFormArray().push(control);
   }
@@ -73,48 +85,27 @@ export class DictionaryEditComponent implements OnInit {
     this.getDictionaryValuesFormArray().removeAt(index);
   }
 
-  isDictionaryValueMissing(index: number) {
-    if (this.mainFormGroup.valid) {
-      return false;
-    }
-    const dictionaryValueControl = this.mainFormGroup.get('dictionaryValues.' + index);
-    return dictionaryValueControl.touched
-      && dictionaryValueControl.errors
-      && dictionaryValueControl.errors['required'];
+  noDictionaryValues() {
+    return this.checkIfErrorOccured('noDictionaryValues');
   }
 
-  noDictionaryValues() {
+  duplicateDictionaryValues() {
+    return this.checkIfErrorOccured('duplicateDictionaryValues');
+  }
+
+  checkIfErrorOccured(errorId: string) {
     if (this.mainFormGroup.valid) {
       return false;
     }
-    const dictionaryValues = this.mainFormGroup.get('dictionaryValues');
-    return dictionaryValues.errors
-      && dictionaryValues.errors['noDictionaryValues'];
+    const dictionaryValueControl = this.mainFormGroup.get('dictionaryValues');
+    return dictionaryValueControl.touched
+      && dictionaryValueControl.errors
+      && dictionaryValueControl.errors[errorId];
   }
 
   onSubmit() {
-    this.dictionary.name = this.mainFormGroup.value.dictionaryName;
-    // delete
-    for (let index = 0; index < this.dictionary.dictionaryValues.length; index++) {
-      const element = this.dictionary.dictionaryValues[index];
-      const existingField = this.mainFormGroup.value.dictionaryValues.find((value: DictionaryValue) => value.id === element.id);
-      if (!existingField) {
-        this.dictionary.dictionaryValues.splice(index, 1);
-      }
-    }
-    // create/update
-    for (const dictionaryValue of this.mainFormGroup.value.dictionaryValues) {
-      if (dictionaryValue.id == null) {
-        this.dictionary.dictionaryValues.push(new DictionaryValue(this.dictionary.id, dictionaryValue.name, this.idGenerator.next()));
-        continue;
-      }
-      const existingField = this.dictionary.dictionaryValues.find((value: DictionaryValue) => value.id === dictionaryValue.id);
-      if (existingField) {
-        existingField.name = dictionaryValue.name;
-      }
-    }
-    console.log(this.dictionary);
-    this.dictionariesService.updateDictionary(this.dictionary);
+    // TODO additional validation?
+    this.dictionariesService.updateDictionary(this.mainFormGroup.value);
     this.router.navigate(['..'], { relativeTo: this.route });
   }
 

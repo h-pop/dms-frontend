@@ -30,11 +30,13 @@ export class DictionariesService {
   }
 
   updateDictionary(dictionary: Dictionary) {
-    if (dictionary.id != null) {
-      return;
+    if (dictionary.id) {
+      const index = this.dictionaries.findIndex(d => d.id === dictionary.id);
+      this.dictionaries[index] = dictionary;
+    } else {
+      dictionary.id = this.idGenerator.next();
+      this.dictionaries.push(dictionary);
     }
-    dictionary.id = this.idGenerator.next();
-    this.dictionaries.push(dictionary);
     this.dictionariesChanged.next(this.getDictionaries());
   }
 

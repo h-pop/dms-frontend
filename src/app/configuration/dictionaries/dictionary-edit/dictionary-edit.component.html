@@ -1,46 +1,44 @@
 <form [formGroup]="mainFormGroup"
       (ngSubmit)="onSubmit()">
-  <div style="margin-bottom: 10px;"
-       class="row">
+  <div>
     <mat-form-field>
       <input 
-      matInput 
-      placeholder="Dictionary name"
-      type="text"
-      class="form-control"
-      formControlName="dictionaryName">
+        matInput 
+        placeholder="Dictionary name"
+        type="text"
+        class="form-control"
+        formControlName="name">
+      <mat-error>This value is required!</mat-error>
     </mat-form-field>
-    <span *ngIf="!mainFormGroup.get('dictionaryName').valid && mainFormGroup.get('dictionaryName').touched"
-          class="help-block">This value is required!</span>
-    <button mat-flat-button 
+    <button mat-stroked-button 
             color="primary"
             type="submit"
             [disabled]="!mainFormGroup.valid">Save changes</button>
-    <button mat-flat-button 
-    color="primary"
+    <button mat-stroked-button 
+            color="primary"
             type="button"
             (click)="onAddDictionaryValue()">+</button>
   </div>
   <div formArrayName="dictionaryValues">
     <div *ngFor="let dictionaryValueControl of getDictionaryValueControls(); let i = index">
       <div [formGroupName]="i">
-        <input type="hidden"
-               formControlName="id">
         <mat-form-field>
           <input 
-          matInput 
-          [value]="value"
-          placeholder="Dictionary value"
-          type="text"
-          class="form-control"
-          formControlName="name">
+            matInput 
+            placeholder="Dictionary value"
+            type="text"
+            class="form-control"
+            formControlName="name">
+          <button 
+            type="button" 
+            matSuffix 
+            mat-button color="warn" 
+            (click)="onDeleteDictionaryValue(i)">X</button>
+            <mat-error>This value is required!</mat-error>
         </mat-form-field>
-        <span *ngIf="isDictionaryValueMissing(i)"
-              class="help-block">This value is required!</span>
-        <button mat-flat-button color="warn" type="button" (click)="onDeleteDictionaryValue(i)">X</button>
       </div>
     </div>
-    <span *ngIf="noDictionaryValues()"
-          class="help-block">At least one dictionary value is required!</span>
+    <span *ngIf="noDictionaryValues()" style="color: red">At least one dictionary value is required!</span>
+    <span *ngIf="duplicateDictionaryValues()" style="color: red">Dictionary values cannot be duplicated!</span>
   </div>
 </form>
