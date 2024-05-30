@@ -30,7 +30,10 @@ import { DpDatePickerModule } from 'ng2-date-picker';
 import { DocumentFieldComponent } from './new-document/document-field/document-field.component';
 import { ValidationService } from './shared/validation.service';
 import { UserService } from './shared/user.service';
-
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,9 +62,12 @@ import { UserService } from './shared/user.service';
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
-    DpDatePickerModule
+    DpDatePickerModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatButtonModule
   ],
-  providers: [LoginService, DocumentTypesService, DictionariesService, IdGenerator, ValidationService, UserService],
+  providers: [LoginService, DocumentTypesService, DictionariesService, IdGenerator, ValidationService, UserService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

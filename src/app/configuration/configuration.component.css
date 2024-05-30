@@ -1,0 +1,11 @@
+.configuration {
+    display: flex;
+}
+
+.configuration-left {
+    flex-grow: 1;
+}
+
+.configuration-right {
+    flex-grow: 11;
+}

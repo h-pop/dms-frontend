@@ -1,0 +1,9 @@
+.configuration-list {
+    display: flex;
+    flex-direction: column;
+
+    > span {
+        padding: 8px;
+        cursor: pointer;
+    }
+}
