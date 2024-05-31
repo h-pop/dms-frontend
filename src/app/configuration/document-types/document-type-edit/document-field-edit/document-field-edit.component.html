@@ -1,123 +1,114 @@
 <form [formGroup]="fieldGroup">
-  <div class="col-md-12">
-    <div class="row">
-      <div class="col-md-12">
-        <hr>
-      </div>
+  <hr>
+  <mat-form-field>
+    <input 
+      matInput
+      formControlName="name"
+      placeholder="Name"
+      type="text">
+    <mat-error>This value is required!</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select 
+      formControlName="type"
+      placeholder="Type"
+      (selectionChange)="onTypeChange()">
+      <mat-option 
+        *ngFor="let fieldType of fieldTypes"
+        [value]="fieldType">{{fieldType}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-checkbox  
+    id="requiredInput" 
+    autocomplete="off" 
+    formControlName="required"> Required </mat-checkbox>
+  <button 
+    type="button" 
+    mat-button color="warn" 
+    (click)="onDeleteField()">X</button>
+  <div [ngSwitch]="fieldGroup.get('type').value">
+    <div *ngSwitchCase="'dictionary'">
+      <mat-form-field>
+        <mat-label>Select default dictionary</mat-label>
+        <mat-select 
+          formControlName="dictionaryId"
+          (selectionChange)="onDictionaryChange($event.value)">
+          <mat-option 
+            *ngFor="let dictionary of dictionaries"
+            [value]="dictionary.id">
+            {{dictionary.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Select default dictionary value</mat-label>
+        <mat-select 
+          formControlName="defaultValue">
+          <mat-option 
+            *ngFor="let dictionaryValue of selectedDictionaryValues"
+            [value]="dictionaryValue.id">
+            {{dictionaryValue.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <div class="row"
-         style="margin-bottom: 10px;">
-      <input type="hidden"
-             formControlName="id">
-      <div class="col-md-6">
-        <input formControlName="name"
-               placeholder="Name"
-               type="text"
-               class="form-control">
-      </div>
-      <div class="col-md-3">
-        <select formControlName="type"
-                class="form-control"
-                placeholder="Type"
-                (change)="onTypeChange()">
-          <option *ngFor="let fieldType of fieldTypes"
-                  [value]="fieldType">{{fieldType}}</option>
-        </select>
-      </div>
-      <div class="col-md-2">
-        <div class="form-control">
-          <span for="requiredInput">
-            <input id="requiredInput"
-                   type="checkbox"
-                   autocomplete="off"
-                   formControlName="required"> Required </span>
-        </div>
-      </div>
-      <div class="col-md-1">
-        <button class="btn btn-danger"
-                type="button"
-                (click)="onDeleteField()">X</button>
-      </div>
+    <div *ngSwitchCase="'textarea'">
+      <mat-form-field>
+        <mat-label>Default value</mat-label>
+        <textarea 
+          matInput 
+          formControlName="defaultValue"
+          type="text"
+          rows="4"></textarea>
+      </mat-form-field>
     </div>
-    <div class="row">
-      <div [ngSwitch]="fieldGroup.get('type').value">
-        <div *ngSwitchCase="'dictionary'">
-          <div class="col-md-6">
-            <select class="form-control"
-                    (change)="onDictionaryChange($event.target.value)"
-                    formControlName="dictionaryId"> 
-              <option *ngFor="let dictionary of dictionaries"
-                      [value]="dictionary.id">{{dictionary.name}}</option>
-            </select>
-          </div>
-          <div class="col-md-5">
-            <select class="form-control"
-                    formControlName="defaultValue">
-              <option [value]="null">-- Select default dictionary value --</option>
-              <option *ngFor="let dictionaryValue of selectedDictionaryValues"
-                      [value]="dictionaryValue.id">{{dictionaryValue.name}}</option>
-            </select>
-          </div>
-        </div>
-        <div *ngSwitchCase="'textarea'">
-          <div class="col-md-11">
-            <textarea formControlName="defaultValue"
-                      placeholder="Default value"
-                      type="text"
-                      rows="4"
-                      class="form-control"></textarea>
-          </div>
-        </div>
-        <div *ngSwitchCase="'user'">
-          <div class="col-md-11">
-            <select class="form-control"
-                    formControlName="defaultValue">
-              <option [value]="null">-- Select user --</option>
-              <option *ngFor="let user of users"
-                      [value]="user">{{user}}</option>
-            </select>
-          </div>
-        </div>
-        <div *ngSwitchCase="'date'">
-          <div class="col-md-11">
-            <div class="input-group">
-              <input type="text"
-              class="form-control"
-              theme="dp-material"
-              style="display: inline;"
-              formControlName="defaultValue"
-              placeholder="Select date"
-              [dpDayPicker]="{}"/></div>
-          </div>
-        </div>
-        <div *ngSwitchCase="'daterange'">
-          <div class="col-md-11">
-            <input type="text"
-                   class="form-control"
-                   theme="dp-material"
-                   style="display: inline;"
-                   formControlName="defaultValue"
-                   placeholder="Select dates from-to"
-                   [dpDayPicker]="{allowMultiSelect: true}" 
-                   (onChange)="onDateRangeChange($event)" />
-          </div>
-        </div>
-        <div *ngSwitchDefault>
-          <div class="col-md-11">
-            <input formControlName="defaultValue"
-                   placeholder="Default value"
-                   type="text"
-                   class="form-control">
-          </div>
-        </div>
-      </div>
+    <div *ngSwitchCase="'user'">
+      <mat-form-field>
+        <mat-label>Select default user</mat-label>
+        <mat-select 
+          formControlName="defaultValue">
+          <mat-option 
+            *ngFor="let user of users"
+            [value]="user">
+            {{user}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <span *ngIf="!fieldGroup.valid && fieldGroup.touched"
-              class="help-block"
-              style='color: #d9534f'>This document field is invalid!</span>
-      </div>
+    <div *ngSwitchCase="'date'">        
+      <mat-form-field>
+        <input 
+          matInput 
+          placeholder="Select date"
+          type="text"
+          formControlName="defaultValue"
+          theme="dp-material"
+          [dpDayPicker]="{}" >
+      </mat-form-field>
+    </div>
+    <div *ngSwitchCase="'daterange'">
+      <mat-form-field>
+        <input 
+          matInput 
+          placeholder="Select dates from-to"
+          type="text"
+          formControlName="defaultValue"
+          [dpDayPicker]="{allowMultiSelect: true}" 
+          (onChange)="onDateRangeChange($event)" 
+          theme="dp-material">
+      </mat-form-field>
+    </div>
+    <div *ngSwitchDefault>
+      <mat-form-field>
+        <input 
+          matInput 
+          placeholder="Default value"
+          type="text"
+          formControlName="defaultValue">
+      </mat-form-field>
     </div>
   </div>
+  <span *ngIf="!fieldGroup.valid && fieldGroup.touched"
+        class="help-block"
+        style='color: #d9534f'>This document field is invalid!</span>
 </form>

@@ -81,7 +81,7 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
     return fieldType === FieldTypeEnum.DICTIONARY;
   }
 
-  onDictionaryChange(value: number) {
+  onDictionaryChange(value: any) {
     const dictionary = this.dictionariesService.getDictionary(+value);
     this.selectedDictionaryValues = dictionary?.dictionaryValues || [];
   }

@@ -1,38 +1,30 @@
 <form [formGroup]="mainFormGroup"
       (ngSubmit)="onSubmit()">
-  <div class="row">
-    <div class="col-md-6">
-      <input placeholder="Document type"
-             type="text"
-             class="form-control"
-             formControlName="documentTypeName">
-    </div>
-    <div class="col-md-5">
-      <div class="pull-right">
-        <button class="btn btn-primary"
-                type="submit"
-                [disabled]="!mainFormGroup.valid">Save changes</button>
-      </div>
-    </div>
-    <div class="col-md-1">
-      <button class="btn btn-success"
-              type="button"
-              (click)="onAddField()">+</button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12"
-         formArrayName="fields">
-      <div class="row"
-           *ngFor="let fieldControl of getFieldsControls(); let i = index"
-           [formGroupName]="i">
-        <app-document-field-edit [fieldGroup]="mainFormGroup.get('fields.' + i)"
-                                 [field]="fields[i]"
-                                 (deleteField)="onDeleteField(i)"></app-document-field-edit>
-      </div>
-    </div>
-  </div>
+  <mat-form-field>
+    <input 
+      matInput 
+      placeholder="Document name"
+      type="text"
+      formControlName="documentTypeName">
+    <mat-error>This value is required!</mat-error>
+  </mat-form-field>
+  <button mat-stroked-button 
+          color="primary"
+          type="submit"
+          [disabled]="!mainFormGroup.valid">Save changes</button>
+  <button mat-stroked-button 
+          color="primary"
+          type="button"
+          (click)="onAddField()">+</button>
   <span *ngIf="!mainFormGroup.valid && mainFormGroup.touched"
-        class="help-block"
         style='color: #d9534f'>Please enter a valid data!</span>
+  <div formArrayName="fields">
+    <div class="row"
+          *ngFor="let fieldControl of getFieldsControls(); let i = index"
+          [formGroupName]="i">
+      <app-document-field-edit [fieldGroup]="mainFormGroup.get('fields.' + i)"
+                                [field]="fields[i]"
+                                (deleteField)="onDeleteField(i)"></app-document-field-edit>
+    </div>
+  </div>
 </form>

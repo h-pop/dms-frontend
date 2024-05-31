@@ -38,6 +38,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,7 +75,9 @@ import { MatInputModule } from '@angular/material/input';
     MatCardModule,
     MatListModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [LoginService, DocumentTypesService, DictionariesService, IdGenerator, ValidationService, UserService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
