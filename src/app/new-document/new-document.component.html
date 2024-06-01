@@ -1,62 +1,54 @@
 <form [formGroup]="mainFormGroup"
-      (ngSubmit)="onSubmit()">
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="documentType"
-               class="dms-label">Document type</label>
-        <select name="documentType"
-                formControlName="documentType"
-                class="form-control"
-                (change)="onDocumentTypeChange()">
-          <option *ngFor="let documentType of documentTypes"
-                  [ngValue]="documentType">{{documentType.name}}</option>
-        </select>
-      </div>
-      <div formArrayName="fields">
-        <div class="form-group"
-             *ngFor="let fieldControl of getFieldsControls(); let i = index"
-             [formGroupName]="i">
-          <app-document-field [documentFieldGroup]="mainFormGroup.get('fields.' + i)"
-                              [documentField]="documentType.fields[i]"></app-document-field>
-        </div>
-      </div>
-      <div *ngIf="documentType != null"
-           class="form-group">
-        <button class="btn btn-success"
-                type="submit"
-                [disabled]="!mainFormGroup.valid"
-                style="margin-right: 10px;">Save changes</button>
-        <button class="btn btn-primary"
-                type="button"
-                (click)="onClear()">Clear</button>
-      </div>
+      (ngSubmit)="onSubmit()" style="display: flex;">
+  <div style="flex-grow: 1;">
+    <mat-form-field>
+      <mat-label>Document type</mat-label>
+      <mat-select 
+        formControlName="documentType"
+        placeholder="Type"
+        (selectionChange)="onDocumentTypeChange()">
+        <mat-option 
+          *ngFor="let documentType of documentTypes"
+          [value]="documentType">
+          {{documentType.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div>
+      <button 
+        mat-flat-button 
+        color="primary" 
+        type="submit"
+        [disabled]="!mainFormGroup.valid">Save changes</button>
+      <button 
+        mat-flat-button 
+        type="button"
+        (click)="onClear()">Clear</button>
     </div>
-    <div class="col-md-9">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="form-group">
-            <label for="file-upload"
-                   class="form-control dms-label custom-file-upload">
-              <i class="glyphicon glyphicon-upload"></i> Upload document file... </label>
-            <input id="file-upload"
-                   type="file"
-                   (change)="onFileChange($event)"
-                   formControlName="documentFileInput"
-                   accept=".pdf">
-          </div>
-        </div>
-        <div class="col-md-9">
-          <p *ngIf="uploadedDocument; else noDocumentUploadedSpan"
-             class="form-label bg-success">Document uploaded: {{uploadedDocumentMetadata.name}}</p>
-          <ng-template #noDocumentUploadedSpan>
-            <span class="help-block">Document file is required!</span>
-          </ng-template>
-        </div>
+    <div formArrayName="fields">
+      <div *ngFor="let fieldControl of getFieldsControls(); let i = index" [formGroupName]="i">
+        <app-document-field [documentFieldGroup]="mainFormGroup.get('fields.' + i)"
+                            [documentField]="documentType.fields[i]"></app-document-field>
       </div>
-      <pdf-viewer [src]="uploadedDocument"
-                  [render-text]="true"
-                  style="display: block; height: 800px;">
-      </pdf-viewer>
     </div>
   </div>
+  <div style="flex-grow: 11;">
+    <label for="file-upload"
+            class="dms-label custom-file-upload">
+      <i class="glyphicon glyphicon-upload"></i> Upload document file... </label>
+    <input id="file-upload"
+            type="file"
+            (change)="onFileChange($event)"
+            formControlName="documentFileInput"
+            accept=".pdf">
+    <p *ngIf="uploadedDocument; else noDocumentUploadedSpan"
+        class="form-label bg-success">Document uploaded: {{uploadedDocumentMetadata.name}}</p>
+    <ng-template #noDocumentUploadedSpan>
+      <span class="help-block">Document file is required!</span>
+    </ng-template>
+    <pdf-viewer [src]="uploadedDocument"
+                [render-text]="true"
+                style="display: block; height: 800px;">
+    </pdf-viewer>
+  </div>
+</form>

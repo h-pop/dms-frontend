@@ -1,61 +1,59 @@
 <form [formGroup]="documentFieldGroup">
-  <div class="col-md-12">
-    <div class="row">
-      <label for="fieldValue"
-             class="dms-label">{{documentField?.name}}</label>
-      <div class="form-group">
-        <div [ngSwitch]="documentField.type">
-          <div *ngSwitchCase="'dictionary'">
-            <select class="form-control"
-                    formControlName="fieldValue">
-              <option *ngFor="let dictionaryValue of selectedDictionaryValues"
-                      [value]="dictionaryValue.id">{{dictionaryValue.name}}</option>
-            </select>
-          </div>
-          <div *ngSwitchCase="'user'">
-            <select class="form-control"
-                    formControlName="fieldValue">
-              <option *ngFor="let user of users"
-                      [value]="user">{{user}}</option>
-            </select>
-          </div>
-          <div *ngSwitchCase="'daterange'">
-            <input type="text"
-                   id="fieldValue"
-                   class="form-control"
-                   style="display: inline;"
-                   theme="dp-material"
-                   formControlName="fieldValue"
-                   placeholder="Select date from-to"
-                   [dpDayPicker]="{allowMultiSelect: true}"
-                   (onChange)="onDateRangeChange($event)" />
-          </div>
-          <div *ngSwitchCase="'date'">
-            <input type="text"
-                   theme="dp-material"
-                   class="form-control"
-                   style="display: inline;"
-                   formControlName="fieldValue"
-                   placeholder="Select date"
-                   [dpDayPicker]="{}" />
-          </div>
-          <div *ngSwitchCase="'textarea'">
-            <textarea formControlName="fieldValue"
-                      name="fieldValue"
-                      id="fieldValue"
-                      type="text"
-                      rows="4"
-                      class="form-control"></textarea>
-          </div>
-          <div *ngSwitchDefault>
-            <input id="fieldValue"
-                   name="fieldValue"
-                   formControlName="fieldValue"
-                   type="text"
-                   class="form-control">
-          </div>
-        </div>
-      </div>
-    </div>
+  <label for="fieldValue"
+          class="dms-label">{{documentField?.name}}</label>
+  <div [ngSwitch]="documentField.type">
+    <ng-container *ngSwitchCase="'dictionary'">
+      <mat-form-field>
+        <mat-label>Select default dictionary</mat-label>
+        <mat-select formControlName="fieldValue">
+          <mat-option 
+            *ngFor="let dictionaryValue of selectedDictionaryValues"
+            [value]="dictionaryValue.id">
+            {{dictionaryValue.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+    <mat-form-field *ngSwitchCase="'user'">
+      <mat-label>Select default user</mat-label>
+      <mat-select formControlName="fieldValue">
+        <mat-option *ngFor="let user of users"[value]="user">
+          {{user}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngSwitchCase="'daterange'">
+      <mat-label>Select date from-to</mat-label>
+      <mat-date-range-input 
+        formControlName="fieldValue" 
+        [rangePicker]="picker" 
+        (datechange)="onDateRangeChange($event)">
+        <input matStartDate placeholder="Start date">
+        <input matEndDate placeholder="End date">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <mat-form-field *ngSwitchCase="'date'">
+      <mat-label>Select date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fieldValue">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker [calendarHeaderComponent]="exampleHeader"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field *ngSwitchCase="'textarea'">
+      <textarea 
+        matInput 
+        id="fieldValue"
+        formControlName="fieldValue"
+        type="text"
+        rows="4"></textarea>
+    </mat-form-field>
+    <mat-form-field *ngSwitchDefault>
+      <input 
+        matInput 
+        id="fieldValue"
+        type="text"
+        formControlName="fieldValue">
+    </mat-form-field>
   </div>
 </form>
