@@ -3,8 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DictionariesService } from 'src/app/configuration/dictionaries/dictionaries.service';
 import { DictionaryValue, Dictionary } from 'src/app/configuration/dictionaries/dictionary.model';
 import { Field } from '../../document-type.model';
-import moment from 'moment';
-import { AppSettings } from 'src/app/shared/app.settings';
 import { ValidationService } from 'src/app/shared/validation.service';
 import { FieldTypeEnum } from 'src/app/shared/field-type.enum';
 import { UserService } from 'src/app/shared/user.service';
@@ -63,7 +61,9 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
     this.fieldGroup.addControl('name', new FormControl(this.field?.name, Validators.required));
     this.fieldGroup.addControl('type', new FormControl(this.field?.type || this.fieldTypes[0], Validators.required));
     this.fieldGroup.addControl('required', new FormControl(this.field?.required));
-    this.fieldGroup.addControl('dictionaryId', new FormControl(this.field?.dictionaryId));
+    if(this.isDictionary()) {
+      this.fieldGroup.addControl('dictionaryId', new FormControl(this.field?.dictionaryId));
+    }
     this.fieldGroup.addControl('defaultValue', new FormControl(this.field?.defaultValue));
   }
 
@@ -90,12 +90,10 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
     this.deleteField.emit();
   }
 
-  onDateRangeChange(dates: moment.Moment[]) {
-    if (dates.length > 2) {
-      this.fieldGroup.patchValue({
-        defaultValue: dates[2].format(AppSettings.DATE_FORMAT)
-      });
-    }
+  onDateRangeChange(start, end) {
+    // TODO HP how to efficiently store date range data?
+    this.fieldGroup.patchValue({
+      defaultValue: `${start.value}-${end.value}` 
+    });
   }
-
 }
