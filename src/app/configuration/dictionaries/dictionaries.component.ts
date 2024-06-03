@@ -18,10 +18,14 @@ export class DictionariesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dictionaries = this.dictionariesService.dictionaries;
+    this.dictionariesService.dictionariesChanged.subscribe((result) => {
+      this.dictionaries = result
+    });
+    this.dictionariesService.getDictionaries();
   }
 
-  onDelete(index: number) {
+  onDelete(index: number, $event: PointerEvent) {
+    $event.stopPropagation();
     this.dictionariesService.deleteDictionary(index);
   }
 

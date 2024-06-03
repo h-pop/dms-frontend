@@ -1,10 +1,10 @@
-<mat-list *ngFor="let dictionary of dictionaries; let i = index">
+<mat-list *ngFor="let dictionary of dictionaries">
   <mat-list-item (click)="onListItemClick(dictionary.id)" style=" border: 1px solid lightgray; cursor: pointer;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <div>
         {{ dictionary.name }}
       </div>
-      <button mat-flat-button color="warn" (click)="onDelete(i)">X</button>
+      <button mat-flat-button color="warn" (click)="onDelete(dictionary.id, $event)">X</button>
     </div>
   </mat-list-item>
 </mat-list>

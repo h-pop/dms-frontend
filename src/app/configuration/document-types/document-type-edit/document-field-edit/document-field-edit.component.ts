@@ -30,10 +30,13 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
     private userService: UserService) { }
 
   ngOnInit(): void {
-    this.dictionaries = this.dictionariesService.getDictionaries();
-    this.users = this.userService.getUsers();
-    this.initForm();
-    this.onDictionaryChange(this.field?.dictionaryId);
+    this.dictionariesService.dictionariesChanged.subscribe(result => {
+        this.dictionaries = result
+        this.users = this.userService.getUsers();
+        this.initForm();
+        this.onDictionaryChange(this.field?.dictionaryId);
+    });
+    this.dictionariesService.getDictionaries();
   }
 
   ngAfterViewInit(): void {

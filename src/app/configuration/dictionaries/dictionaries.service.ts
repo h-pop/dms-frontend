@@ -1,47 +1,46 @@
-import { Dictionary, DictionaryValue } from './dictionary.model';
-import { Subject } from 'rxjs';
+import { Dictionary } from './dictionary.model';
+import { Observable, Subject, tap } from 'rxjs';
 import { IdGenerator } from 'src/app/shared/id-generator.service';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class DictionariesService {
   dictionariesChanged = new Subject<Dictionary[]>();
-  dictionaries: Dictionary[] = [
-    new Dictionary(1, 'Status', [
-      new DictionaryValue(1, 'New', 1),
-      new DictionaryValue(1, 'Pending approval', 2),
-      new DictionaryValue(1, 'Approved', 3),
-      new DictionaryValue(1, 'Correction needed', 4)
-    ]),
-    new Dictionary(2, 'Office address', [
-      new DictionaryValue(2, 'Wiejska 1/20, Warsaw', 5),
-      new DictionaryValue(2, 'St. Martin Street 2/12, Posen', 6),
-    ]),
-  ];
+  dictionaries: Dictionary[];
 
-  constructor(private idGenerator: IdGenerator) { }
+  static readonly URL = 'http://localhost:8080/dictionary/';
 
-  getDictionaries(): Dictionary[] {
-    return this.dictionaries.slice();
+  constructor(
+    private idGenerator: IdGenerator,
+    private httpClient: HttpClient) { }
+
+  getDictionaries(): void{
+    this.httpClient.get(DictionariesService.URL).subscribe((result: Dictionary[]) => {
+      this.dictionaries = result
+      this.dictionariesChanged.next(this.dictionaries);
+    });;
   }
 
   getDictionary(dictionaryId: any): Dictionary {
     return this.dictionaries.find((value) => value.id === dictionaryId);
   }
-
-  updateDictionary(dictionary: Dictionary) {
-    if (dictionary.id) {
-      const index = this.dictionaries.findIndex(d => d.id === dictionary.id);
-      this.dictionaries[index] = dictionary;
-    } else {
-      dictionary.id = this.idGenerator.next();
-      this.dictionaries.push(dictionary);
-    }
-    this.dictionariesChanged.next(this.getDictionaries());
+  
+  getDictionary2(dictionaryId: any): Observable<any> {
+    return this.httpClient.get(`${DictionariesService.URL}${dictionaryId}`);
   }
 
+  updateDictionary(dictionary: Dictionary): Observable<any> {
+    if (!dictionary.id) {
+      dictionary.id = this.idGenerator.next();
+    }
+    return this.httpClient.post(DictionariesService.URL, dictionary);
+  }
+  
   deleteDictionary(index: number) {
-    this.dictionaries.splice(index, 1);
-    this.dictionariesChanged.next(this.getDictionaries());
+    this.httpClient.delete(`${DictionariesService.URL}${index}`).subscribe(r => {
+      this.dictionaries = this.dictionaries.filter(d => d.id !== index);
+      this.dictionariesChanged.next(this.dictionaries);
+    });
   }
 }

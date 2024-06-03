@@ -13,11 +13,11 @@ export class Dictionary {
 export class DictionaryValue {
   id: number;
   dictionaryId: number;
-  name: string;
+  value: string;
 
-  constructor(dictionaryId: number, name?: string, id?: number) {
+  constructor(dictionaryId: number, value?: string, id?: number) {
     this.id = id;
     this.dictionaryId = dictionaryId;
-    this.name = name;
+    this.value = value;
   }
 }

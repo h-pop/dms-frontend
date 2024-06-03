@@ -23,24 +23,27 @@ export class DictionaryEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchDictionary();
-    this.initializeMainFormGroup();
   }
 
   private fetchDictionary() {
     const dictionaryId = +this.route.snapshot.params.id;
-    this.dictionary = this.dictionariesService.getDictionary(dictionaryId);
-    if (this.dictionary == null) {
-      this.dictionary = new Dictionary();
+    if (dictionaryId) {
+      this.dictionariesService.getDictionary2(dictionaryId).subscribe(result => {
+        this.dictionary = result;
+        this.initializeMainFormGroup();
+      });
+    } else {
+      this.initializeMainFormGroup();
     }
   }
 
   private initializeMainFormGroup() {
     this.mainFormGroup = new FormGroup({
-      id: new FormControl(this.dictionary.id),
-      name: new FormControl(this.dictionary.name, Validators.required),
+      id: new FormControl(this.dictionary?.id),
+      name: new FormControl(this.dictionary?.name, Validators.required),
       dictionaryValues: new FormArray([], [this.hasAtLeastOneValue, this.hasUniqueName])
     });
-    this.dictionary.dictionaryValues.forEach(element => {
+    this.dictionary?.dictionaryValues.forEach(element => {
       this.onAddDictionaryValue(element);
     });
   }
@@ -59,10 +62,10 @@ export class DictionaryEditComponent implements OnInit {
   hasUniqueName(formArray: FormArray): { [s: string]: boolean } {
     let result;
     formArray.value.reduce((a, b) => {
-      if (a.indexOf(b.name) > -1) {
+      if (a.indexOf(b.value) > -1) {
         result = { 'duplicateDictionaryValues': true };
       }
-      a.push(b.name);
+      a.push(b.value);
       return a;
     }, [])
     return result;
@@ -71,8 +74,8 @@ export class DictionaryEditComponent implements OnInit {
   onAddDictionaryValue(element?: DictionaryValue) {
     const control = new FormGroup({
       id: new FormControl(element?.id),
-      dictionaryId: new FormControl(element?.dictionaryId || this.dictionary.id),
-      name: new FormControl(element?.name, Validators.required)
+      dictionaryId: new FormControl(element?.dictionaryId || this.dictionary?.id),
+      value: new FormControl(element?.value, Validators.required)
     });
     this.getDictionaryValuesFormArray().push(control);
   }
@@ -105,8 +108,9 @@ export class DictionaryEditComponent implements OnInit {
 
   onSubmit() {
     // TODO additional validation?
-    this.dictionariesService.updateDictionary(this.mainFormGroup.value);
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.dictionariesService.updateDictionary(this.mainFormGroup.value).subscribe(r => {
+      this.router.navigate(['..'], { relativeTo: this.route });
+    });
   }
 
 }

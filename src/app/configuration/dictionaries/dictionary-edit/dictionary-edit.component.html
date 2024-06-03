@@ -1,5 +1,6 @@
 <form [formGroup]="mainFormGroup"
-      (ngSubmit)="onSubmit()">
+      (ngSubmit)="onSubmit()"
+      *ngIf="mainFormGroup">
   <div>
     <mat-form-field>
       <input 
@@ -26,7 +27,7 @@
             matInput 
             placeholder="Dictionary value"
             type="text"
-            formControlName="name">
+            formControlName="value">
           <button 
             type="button" 
             matSuffix 
