@@ -26,7 +26,6 @@ import { DictionariesService } from './configuration/dictionaries/dictionaries.s
 import { DictionaryEditComponent } from './configuration/dictionaries/dictionary-edit/dictionary-edit.component';
 import { DocumentFieldEditComponent } from './configuration/document-types/document-type-edit/document-field-edit/document-field-edit.component';
 import { IdGenerator } from './shared/id-generator.service';
-import { DpDatePickerModule } from 'ng2-date-picker';
 import { DocumentFieldComponent } from './new-document/document-field/document-field.component';
 import { ValidationService } from './shared/validation.service';
 import { UserService } from './shared/user.service';
@@ -70,7 +69,6 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     FormsModule,
     ReactiveFormsModule,
     PdfViewerModule,
-    DpDatePickerModule,
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,
