@@ -26,7 +26,7 @@
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.0",
-    "@hpopiolkiewicz/s-table": "~0.0.3"
+    "@hpopiolkiewicz/s-table": "0.0.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.0.1",

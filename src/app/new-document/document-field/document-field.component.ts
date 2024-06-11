@@ -8,6 +8,7 @@ import { AppSettings } from 'src/app/shared/app.settings';
 import { FieldTypeEnum } from 'src/app/shared/field-type.enum';
 import { ValidationService } from 'src/app/shared/validation.service';
 import { UserService } from 'src/app/shared/user.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-document-field',
@@ -22,6 +23,9 @@ export class DocumentFieldComponent implements OnInit {
   selectedDictionaryValues: DictionaryValue[];
   users: string[];
 
+  start: Date;
+  end: Date;
+
   constructor(private dictionariesService: DictionariesService,
     private formBuilder: FormBuilder,
     private validationService: ValidationService,
@@ -29,16 +33,23 @@ export class DocumentFieldComponent implements OnInit {
 
   ngOnInit(): void {
     this.users = this.userService.getUsers();
-    this.initializeDocumentFieldGroup();
     if (this.documentField?.type === FieldTypeEnum.DICTIONARY && this.documentField?.dictionaryId) {
-      this.selectedDictionaryValues = this.dictionariesService.getDictionary(+this.documentField.dictionaryId).dictionaryValues;
+      this.dictionariesService.getDictionary2(+this.documentField.dictionaryId).subscribe(result => {
+        this.initializeDocumentFieldGroup();
+        this.selectedDictionaryValues = result.dictionaryValues;
+      });
+    } else {
+      this.initializeDocumentFieldGroup();
     }
   }
 
-  onDateRangeChange(dates: moment.Moment[]) {
-    if (dates.length > 2) {
+  onDateRangeChange(type: string, event: MatDatepickerInputEvent<Date>) {
+    if (type === 'start') {
+      this.start = event.value;
+    } else if (type === 'end') {
+      this.end = event.value;
       this.documentFieldGroup.patchValue({
-        fieldValue: dates[2].format(AppSettings.DATE_FORMAT)
+        fieldValue: `${moment(this.start).format(AppSettings.DATE_FORMAT)} - ${moment(this.end).format(AppSettings.DATE_FORMAT)}`
       });
     }
   }
