@@ -34,7 +34,7 @@ export class DocumentFieldComponent implements OnInit {
   ngOnInit(): void {
     this.users = this.userService.getUsers();
     if (this.documentField?.type === FieldTypeEnum.DICTIONARY && this.documentField?.dictionaryId) {
-      this.dictionariesService.getDictionary2(+this.documentField.dictionaryId).subscribe(result => {
+      this.dictionariesService.getDictionary(+this.documentField.dictionaryId).subscribe(result => {
         this.initializeDocumentFieldGroup();
         this.selectedDictionaryValues = result.dictionaryValues;
       });

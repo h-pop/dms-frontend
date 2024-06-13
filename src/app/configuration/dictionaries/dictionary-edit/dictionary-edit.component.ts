@@ -28,7 +28,7 @@ export class DictionaryEditComponent implements OnInit {
   private fetchDictionary() {
     const dictionaryId = +this.route.snapshot.params.id;
     if (dictionaryId) {
-      this.dictionariesService.getDictionary2(dictionaryId).subscribe(result => {
+      this.dictionariesService.getDictionary(dictionaryId).subscribe(result => {
         this.dictionary = result;
         this.initializeMainFormGroup();
       });

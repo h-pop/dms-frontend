@@ -30,13 +30,19 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
     private userService: UserService) { }
 
   ngOnInit(): void {
-    this.dictionariesService.dictionariesChanged.subscribe(result => {
+    if (this.isDictionary()) {
+      this.dictionariesService.getDictionaries();
+      this.dictionariesService.dictionariesChanged.subscribe(result => {
         this.dictionaries = result
-        this.users = this.userService.getUsers();
         this.initForm();
         this.onDictionaryChange(this.field?.dictionaryId);
-    });
-    this.dictionariesService.getDictionaries();
+      });
+    } else if (this.field.type === FieldTypeEnum.USER) {
+      this.users = this.userService.getUsers();
+      this.initForm();
+    } else {
+      this.initForm();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -64,7 +70,7 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
     this.fieldGroup.addControl('name', new FormControl(this.field?.name, Validators.required));
     this.fieldGroup.addControl('type', new FormControl(this.field?.type || this.fieldTypes[0], Validators.required));
     this.fieldGroup.addControl('required', new FormControl(this.field?.required));
-    if(this.isDictionary()) {
+    if (this.isDictionary()) {
       this.fieldGroup.addControl('dictionaryId', new FormControl(this.field?.dictionaryId));
     }
     this.fieldGroup.addControl('defaultValue', new FormControl(this.field?.defaultValue));
@@ -80,13 +86,13 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
   }
 
   private isDictionary() {
-    const fieldType = this.fieldGroup.get('type').value;
-    return fieldType === FieldTypeEnum.DICTIONARY;
+    return this.field.type === FieldTypeEnum.DICTIONARY
   }
 
   onDictionaryChange(value: any) {
-    const dictionary = this.dictionariesService.getDictionary(+value);
-    this.selectedDictionaryValues = dictionary?.dictionaryValues || [];
+    this.dictionariesService.getDictionary(+value).subscribe(result => {
+      this.selectedDictionaryValues = result?.dictionaryValues || [];
+    });
   }
 
   onDeleteField() {
@@ -96,7 +102,7 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
   onDateRangeChange(start, end) {
     // TODO HP how to efficiently store date range data?
     this.fieldGroup.patchValue({
-      defaultValue: `${start.value}-${end.value}` 
+      defaultValue: `${start.value}-${end.value}`
     });
   }
 }
