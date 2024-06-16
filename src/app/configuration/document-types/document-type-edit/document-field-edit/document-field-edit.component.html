@@ -1,4 +1,4 @@
-<form [formGroup]="fieldGroup">
+<form [formGroup]="fieldGroup" *ngIf="fieldGroup">
   <mat-form-field>
     <input 
       matInput
@@ -17,7 +17,7 @@
         [value]="fieldType">{{fieldType}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <ng-container [ngSwitch]="fieldGroup.get('type').value">
+  <ng-container [ngSwitch]="field.type">
     <ng-container *ngSwitchCase="'dictionary'">
       <mat-form-field>
         <mat-label>Select default dictionary</mat-label>
@@ -38,7 +38,7 @@
           <mat-option 
             *ngFor="let dictionaryValue of selectedDictionaryValues"
             [value]="dictionaryValue.id">
-            {{dictionaryValue.name}}
+            {{dictionaryValue.value}}
           </mat-option>
         </mat-select>
       </mat-form-field>

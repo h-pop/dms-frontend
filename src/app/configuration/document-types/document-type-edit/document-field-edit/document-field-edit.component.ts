@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DictionariesService } from 'src/app/configuration/dictionaries/dictionaries.service';
 import { DictionaryValue, Dictionary } from 'src/app/configuration/dictionaries/dictionary.model';
@@ -12,7 +12,7 @@ import { UserService } from 'src/app/shared/user.service';
   templateUrl: './document-field-edit.component.html',
   styleUrls: ['./document-field-edit.component.css']
 })
-export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
+export class DocumentFieldEditComponent implements OnInit {
 
   @Input() fieldGroup: FormGroup;
   @Input() field: Field;
@@ -34,18 +34,12 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
       this.dictionariesService.getDictionaries();
       this.dictionariesService.dictionariesChanged.subscribe(result => {
         this.dictionaries = result
-        this.initForm();
         this.onDictionaryChange(this.field?.dictionaryId);
       });
     } else if (this.field.type === FieldTypeEnum.USER) {
       this.users = this.userService.getUsers();
-      this.initForm();
-    } else {
-      this.initForm();
     }
-  }
-
-  ngAfterViewInit(): void {
+    this.initForm();
     this.setValidators();
   }
 
@@ -57,12 +51,14 @@ export class DocumentFieldEditComponent implements OnInit, AfterViewInit {
     defaultValueControl.setValidators(this.validationService.getValidator(fieldType as FieldTypeEnum));
     defaultValueControl.updateValueAndValidity();
 
-    const dictionaryIdValidators = this.isDictionary() ? Validators.required : [];
-    const dictionaryIdControl = this.fieldGroup.get('dictionaryId');
+    if (this.isDictionary()) {
+      const dictionaryIdValidators = this.isDictionary() ? Validators.required : [];
+      const dictionaryIdControl = this.fieldGroup.get('dictionaryId');
 
-    dictionaryIdControl.clearValidators();
-    dictionaryIdControl.setValidators(dictionaryIdValidators);
-    dictionaryIdControl.updateValueAndValidity();
+      dictionaryIdControl.clearValidators();
+      dictionaryIdControl.setValidators(dictionaryIdValidators);
+      dictionaryIdControl.updateValueAndValidity();
+    }
   }
 
   initForm() {
